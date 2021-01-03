@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DoctorsMainMenuActivity">
+
+    <ImageView
+        android:id="@+id/backGroundTop"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="#1076EA"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <ImageView
+        android:id="@+id/backGroundBot"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:background="#2699fb"
+        app:layout_constraintTop_toBottomOf="@+id/backGroundTop"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/findPatientButton"
+        android:layout_width="200dp"
+        android:layout_height="25dp"
+        android:background="@drawable/find_patient"
+        app:layout_constraintBottom_toBottomOf="@+id/backGroundBot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backGroundTop"
+        app:layout_constraintVertical_bias="0.08" />
+
+    <Button
+        android:id="@+id/addPatientButton"
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="248dp"
+        android:background="@drawable/add_patient"
+        app:layout_constraintBottom_toBottomOf="@+id/backGroundBot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/findPatientButton"
+        app:layout_constraintVertical_bias="0.80" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:background="@drawable/logout"
+        app:layout_constraintBottom_toBottomOf="@+id/backGroundBot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accountButton"
+        app:layout_constraintVertical_bias="0.130" />
+
+    <Button
+        android:id="@+id/accountButton"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:background="@drawable/account"
+        app:layout_constraintBottom_toBottomOf="@+id/backGroundBot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addPatientButton"
+        app:layout_constraintVertical_bias="0.130" />
+
+    <ImageView
+        android:id="@+id/profilePhotoImageView"
+        android:layout_width="58dp"
+        android:layout_height="62dp"
+        android:background="@drawable/profile_photo"
+        app:layout_constraintBottom_toBottomOf="@+id/backGroundTop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.272" />
+
+    <TextView
+        android:id="@+id/professionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Lekarz"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/backGroundTop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePhotoImageView"
+        app:layout_constraintVertical_bias="0.146" />
+
+    <TextView
+        android:id="@+id/studiesNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="188dp"
+        android:text="0"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/professionTextView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BADAŃ"
+        android:textColor="#FFFFFF"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.305"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/studiesNumberTextView" />
+
+    <TextView
+        android:id="@+id/professionTextView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PACJENTÓW"
+        android:textColor="#FFFFFF"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.695"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/patientsNumberTextView" />
+
+    <TextView
+        android:id="@+id/patientsNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="188dp"
+        android:layout_marginEnd="128dp"
+        android:text="0"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/doctorNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="33dp"
+        android:text="Jan Lekarski"
+        android:textColor="#FFFFFF"
+        android:textSize="23dp"
+        app:layout_constraintBottom_toTopOf="@+id/professionTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/backGroundTop"
+        app:layout_constraintTop_toBottomOf="@+id/profilePhotoImageView" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

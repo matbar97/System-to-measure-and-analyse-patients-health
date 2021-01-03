@@ -24,6 +24,7 @@
         android:background="@android:drawable/editbox_background"
         android:ems="10"
         android:hint="kowalski@mail.com"
+        android:textColor="#2699fb"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,17 +40,19 @@
         android:ems="10"
         android:inputType="textPassword"
         android:text="Password"
+        android:textColor="#2699fb"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextLogin"
-        app:layout_constraintVertical_bias="0.157" />
+        app:layout_constraintVertical_bias="0.15" />
 
-    <ImageView
-        android:id="@+id/loginImageButton"
+    <Button
+        android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.522"
@@ -58,15 +61,16 @@
         app:layout_constraintVertical_bias="0.302"
         app:srcCompat="@drawable/login" />
 
-    <ImageView
-        android:id="@+id/imageView5"
+    <Button
+        android:id="@+id/registerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.543"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginImageButton"
+        app:layout_constraintTop_toBottomOf="@+id/loginButton"
         app:layout_constraintVertical_bias="0.288"
         app:srcCompat="@drawable/register" />
 </androidx.constraintlayout.widget.ConstraintLayout>
