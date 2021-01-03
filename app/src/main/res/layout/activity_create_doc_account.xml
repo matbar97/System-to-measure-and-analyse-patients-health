@@ -83,7 +83,6 @@
             android:ems="10"
             android:hint="Hasło"
             android:inputType="textPassword" />
-
     </LinearLayout>
 
     <Button

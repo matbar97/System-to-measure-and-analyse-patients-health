@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PatientCreationActivity"></activity>
+        <activity android:name=".PatientDataFromDocPointOfViewActivity"></activity>
+        <activity android:name=".PatientCreationActivity" />
         <activity android:name=".DoctorsMainMenuActivity" />
         <activity android:name=".CreateDocAccountActivity" />
         <activity android:name=".MainActivity">
