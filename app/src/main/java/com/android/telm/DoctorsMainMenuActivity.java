@@ -28,6 +28,17 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
                 goToPatientCreation();
             }
         });
+        findPatientButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToPatientsList();
+            }
+        });
+    }
+
+    private void goToPatientsList() {
+        Intent intent = new Intent(this, SearchForPatientActivity.class);
+        startActivity(intent);
     }
 
     private void goToPatientCreation() {

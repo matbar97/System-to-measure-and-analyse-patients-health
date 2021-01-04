@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StudyReviewActivity"></activity>
+        <activity android:name=".SearchForPatientActivity"></activity>
+        <activity android:name=".StudyReviewActivity" />
         <activity android:name=".AddStudyActivity" />
         <activity android:name=".PatientDataFromDocPointOfViewActivity" />
         <activity android:name=".PatientCreationActivity" />
