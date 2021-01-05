@@ -25,7 +25,7 @@
         android:breakStrategy="simple"
         android:ellipsize="start"
         android:ems="10"
-        android:hint="Imię i nazwisko"
+        android:hint="Imię"
         android:inputType="textPersonName"
         android:textColor="#2699fb"
 
@@ -35,37 +35,36 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/birthEditText"
+        android:id="@+id/surnameEditText"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="180dp"
         android:breakStrategy="simple"
         android:ellipsize="start"
         android:ems="10"
-        android:hint="Data urodzenia dd/mm/rr"
+        android:hint="Nazwisko"
+        android:inputType="textPersonName"
         android:textColor="#2699fb"
 
-        android:inputType="date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/peselEditText"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:breakStrategy="simple"
         android:ellipsize="start"
         android:ems="10"
         android:hint="PESEL"
-        android:textColor="#2699fb"
         android:inputType="numberDecimal"
+        android:textColor="#2699fb"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/birthEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
 
     <Button
         android:id="@+id/addPatientButton"
