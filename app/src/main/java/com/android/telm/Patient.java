@@ -11,7 +11,7 @@ public class Patient {
     public Patient() {
 
     }
-    private int id;
+
     private String name;
     private String surname;
     private String pesel;
@@ -19,8 +19,7 @@ public class Patient {
     @Override
     public String toString() {
         return "Patient{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", pesel='" + pesel + '\'' +
                 '}';
@@ -38,13 +37,13 @@ public class Patient {
         this.surname = patient.getSurname();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public int getId() {
+//        return id;
+////    }
+////
+////    public void setId(int id) {
+////        this.id = id;
+////    }
 
     public String getName() {
         return name;
@@ -70,40 +69,38 @@ public class Patient {
         this.pesel = pesel;
     }
 
-    public String packData() {
-        JSONObject jo=new JSONObject();
-        StringBuffer packedData=new StringBuffer();
-
-        try {
-            jo.put("name", name);
-            jo.put("surname", surname);
-            jo.put("pesel", pesel);
-            Boolean firstValue=true;
-
-            Iterator it=jo.keys();
-
-            do {
-                String key = it.next().toString();
-                String value = jo.get(key).toString();
-
-                if(firstValue) {
-                    firstValue=false;
-                } else {
-                    packedData.append("&");
-                }
-
-                packedData.append(URLEncoder.encode(key,"UTF-8"));
-                packedData.append("=");
-                packedData.append(URLEncoder.encode(value,"UTF-8"));
-
-            } while (it.hasNext());
-            {
-                return packedData.toString();
-            }
-
-        } catch (JSONException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    public String packData() {
+//        JSONObject jo=new JSONObject();
+//        StringBuffer packedData=new StringBuffer();
+//
+//        try {
+//            jo.put("name", name);
+//            jo.put("surname", surname);
+//            jo.put("pesel", pesel);
+//            Boolean firstValue=true;
+//            Iterator it=jo.keys();
+//            do {
+//                String key = it.next().toString();
+//                String value = jo.get(key).toString();
+//
+//                if(firstValue) {
+//                    firstValue=false;
+//                } else {
+//                    packedData.append("&");
+//                }
+//
+//                packedData.append(URLEncoder.encode(key,"UTF-8"));
+//                packedData.append("=");
+//                packedData.append(URLEncoder.encode(value,"UTF-8"));
+//
+//            } while (it.hasNext());
+//            {
+//                return packedData.toString();
+//            }
+//
+//        } catch (JSONException | UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 }

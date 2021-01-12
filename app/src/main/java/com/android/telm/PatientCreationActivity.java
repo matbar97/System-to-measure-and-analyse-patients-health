@@ -28,8 +28,9 @@ public class PatientCreationActivity extends AppCompatActivity {
         addPatientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Sender s = new Sender(PatientCreationActivity.this, urlAddr, nameEditText, peselEditText, surnameEditText);
-                s.execute();
+//                Sender s = new Sender(PatientCreationActivity.this, urlAddr, nameEditText, peselEditText, surnameEditText);
+//                s.execute();
+
                 goToPatientsData();
             }
         });
