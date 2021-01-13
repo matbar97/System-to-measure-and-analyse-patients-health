@@ -68,39 +68,4 @@ public class Patient {
     public void setPesel(String pesel) {
         this.pesel = pesel;
     }
-
-//    public String packData() {
-//        JSONObject jo=new JSONObject();
-//        StringBuffer packedData=new StringBuffer();
-//
-//        try {
-//            jo.put("name", name);
-//            jo.put("surname", surname);
-//            jo.put("pesel", pesel);
-//            Boolean firstValue=true;
-//            Iterator it=jo.keys();
-//            do {
-//                String key = it.next().toString();
-//                String value = jo.get(key).toString();
-//
-//                if(firstValue) {
-//                    firstValue=false;
-//                } else {
-//                    packedData.append("&");
-//                }
-//
-//                packedData.append(URLEncoder.encode(key,"UTF-8"));
-//                packedData.append("=");
-//                packedData.append(URLEncoder.encode(value,"UTF-8"));
-//
-//            } while (it.hasNext());
-//            {
-//                return packedData.toString();
-//            }
-//
-//        } catch (JSONException | UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 }
