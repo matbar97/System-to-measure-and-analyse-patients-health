@@ -47,4 +47,5 @@ configurations.all {
                 details.useVersion "26.+"
             }
         }
-    }}
+    }
+}
