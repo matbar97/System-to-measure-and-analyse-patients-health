@@ -43,7 +43,7 @@ public class SearchForPatientActivity extends AppCompatActivity {
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
     List<Patient> patientList;
-    String token ="";
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +56,9 @@ public class SearchForPatientActivity extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(SearchForPatientActivity.this);
 
         recyclerView.setLayoutManager(layoutManager);
-
-        patientList = new ArrayList<>();
 
 
         getLoadPatients();
@@ -75,27 +73,23 @@ public class SearchForPatientActivity extends AppCompatActivity {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-
+                patientList = new ArrayList<>();
                 for (int i = 0; i < response.length(); i++) {
-
                     Patient patient = new Patient();
-
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
-//                        token = response.get("token");
-                        patient.setName(jsonObject.getString("name"));
-                        patient.setSurname(jsonObject.getString("surname"));
-                        patient.setPesel(jsonObject.getString("pesel"));
-
+//                        patient.setId(String.valueOf(jsonObject.get("id")));
+                        patient.setName(jsonObject.get("name").toString());
+                        patient.setSurname(jsonObject.get("surname").toString());
+                        patient.setPesel(jsonObject.get("pesel").toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     patientList.add(patient);
                 }
-                mAdapter = new PatientRecyclerAdapter(getApplicationContext(), patientList);
 
+                mAdapter = new PatientRecyclerAdapter(SearchForPatientActivity.this, patientList);
                 recyclerView.setAdapter(mAdapter);
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -108,14 +102,12 @@ public class SearchForPatientActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 Intent intent = getIntent();
-                String token = intent.getStringExtra("token");
+                token = intent.getStringExtra("token");
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
 
         };
         queue.add(jsonArrayRequest);
-
     }
-
 }

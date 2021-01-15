@@ -44,7 +44,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private Button loginButton, registerButton;
-    private EditText editTextLogin, editTextPassword;
+    private EditText editTextLogin, editTextPasswordLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
         editTextLogin = findViewById(R.id.editTextLogin);
-        editTextPassword = findViewById(R.id.editTextPassword);
+        editTextPasswordLogin = findViewById(R.id.editTextPassword);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,19 +87,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToAccountCreation() {
         Intent intent = new Intent(this, CreateDocAccountActivity.class);
-
         startActivity(intent);
     }
 
     public void sendPostData() throws JSONException {
-
         String URL = "http://192.168.99.1:8080/auth/signin";
         final JSONObject jsonBody = new JSONObject();
         final String username = editTextLogin.getText().toString();
-        final String pwd = editTextPassword.getText().toString();
+        final String pwd = editTextPasswordLogin.getText().toString();
 
         jsonBody.put("username", username);
         jsonBody.put("password", pwd);
+
         final String requestBody = jsonBody.toString();
 
         JsonObjectRequest request = new JsonObjectRequest(
@@ -115,13 +114,15 @@ public class MainActivity extends AppCompatActivity {
                                 intent.putExtra("token", token);
                                 startActivity(intent);
                                 Toast.makeText(getApplicationContext(), "Witaj " + username, Toast.LENGTH_SHORT).show();
-                            } else if (username.contains("user")) {
+                            }
+                            else { //(username.contains("user")) {
                                 Intent intent = new Intent(getApplicationContext(), PatientsMenuActivity.class);
                                 intent.putExtra("token", token);
                                 startActivity(intent);
                                 Toast.makeText(getApplicationContext(), "Witaj " + username, Toast.LENGTH_SHORT).show();
                             }
-                        } catch (JSONException e) {
+                        }
+                        catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
@@ -164,7 +165,20 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-//        final JSONObject jsonBody = new JSONObject();
+
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.start();
+        requestQueue.add(request);
+
+    }
+
+
+    //        final JSONObject jsonBody = new JSONObject();
 //        jsonBody.put("username", editTextLogin.getText().toString());
 //        jsonBody.put("password", editTextPassword.getText().toString());
 //        final String requestBody = jsonBody.toString();
@@ -240,16 +254,6 @@ public class MainActivity extends AppCompatActivity {
 //                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response.toString()));
 //            }
 
-
-        request.setRetryPolicy(new DefaultRetryPolicy(
-                3000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.start();
-        requestQueue.add(request);
-
-    }
 
 //    public static boolean hasActiveInternetConnection(Context context) {
 //        if (isNetworkAvailable(context)) {

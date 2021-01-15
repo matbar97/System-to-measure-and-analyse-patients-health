@@ -86,7 +86,7 @@
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/editTextPassword"
+            android:id="@+id/editTextPasswordNewPatient"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="70dp"

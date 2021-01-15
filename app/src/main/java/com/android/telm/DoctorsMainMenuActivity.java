@@ -40,7 +40,7 @@ import java.util.Map;
 public class DoctorsMainMenuActivity extends AppCompatActivity {
     private Button findPatientButton, addPatientButton, logoutButton, accountButton;
     private TextView professionTextView, doctorNameTextView, studiesNumberTextView;
-//    String token;
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,6 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
 
                     doctorNameTextView.setText(response.getString("name")
                             + " " + response.getString("surname"));
-//                    String token = response.get("token").toString();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -103,7 +102,7 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 Intent intent = getIntent();
-                String token = intent.getStringExtra("token");
+                token = intent.getStringExtra("token");
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
@@ -151,17 +150,19 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
 
     private void goToPatientsList() {
         Intent intent = new Intent(getApplicationContext(), SearchForPatientActivity.class);
-//
-            startActivity(intent);
+//        intent.putExtra("token", token);
+        startActivity(intent);
 //        } else { if(!token.isEmpty()) {
-//            intent.putExtra("token", token);
-//            System.out.println(token);
+            System.out.println(token);
 //            return;
 //        }
     }
 
     private void goToPatientCreation() {
+
         Intent intent = new Intent(this, PatientCreationActivity.class);
+        intent.putExtra("token", token);
+        System.out.println(token);
         startActivity(intent);
     }
 }

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -41,7 +42,7 @@ public class CreateDocAccountActivity extends AppCompatActivity {
         editTextSurname = findViewById(R.id.editTextName2);
         editTextPESEL = findViewById(R.id.editTextPESEL);
         editTextEmail = findViewById(R.id.editTextEmail);
-        editTextPassword = findViewById(R.id.editTextPassword);
+        editTextPassword = findViewById(R.id.editTextPasswordNewPatient);
 
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,15 +93,11 @@ public class CreateDocAccountActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.i("VOLLEY", response.toString());
-                        try {
-                            String token = response.getString("token");
-                            Intent intent = new Intent(getApplicationContext(), PatientsMenuActivity.class);
-                            intent.putExtra("token", token);
-                            startActivity(intent);
-                            Toast.makeText(getApplicationContext(), "Zarejestrowano " + username, Toast.LENGTH_SHORT).show();
-                        } catch (JSONException ex) {
-                            ex.printStackTrace();
-                        }
+                        //                            String token = response.getString("token");
+//                        Intent intent = new Intent(getApplicationContext(), PatientsMenuActivity.class);
+////                            intent.putExtra("token", token);
+//                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(), "Zarejestrowano " + username, Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -142,8 +139,102 @@ public class CreateDocAccountActivity extends AppCompatActivity {
                 }
             }
         };
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.start();
-        queue.add(request);
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.start();
+        requestQueue.add(request);
+        sendLoginPostData();
+
+    }
+
+    public void sendLoginPostData() throws JSONException {
+
+        String URL = "http://192.168.99.1:8080/auth/signin";
+        final JSONObject jsonBody = new JSONObject();
+        final String username = editTextName.getText().toString();
+        final String pwd = editTextPassword.getText().toString();
+
+        jsonBody.put("username", username);
+        jsonBody.put("password", pwd);
+
+        final String requestBody = jsonBody.toString();
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST, URL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("VOLLEY", response.toString());
+                        try {
+                            String token = response.getString("token");
+//                            if (username.contains("doctor")){
+//                                Intent intent = new Intent(getApplicationContext(), DoctorsMainMenuActivity.class);
+//                                intent.putExtra("token", token);
+//                                startActivity(intent);
+//                                Toast.makeText(getApplicationContext(), "Witaj " + username, Toast.LENGTH_SHORT).show();
+//                            } else  {
+                                Intent intent = new Intent(getApplicationContext(), PatientsMenuActivity.class);
+                                intent.putExtra("token", token);
+                                startActivity(intent);
+                                Toast.makeText(getApplicationContext(), "Witaj " + username, Toast.LENGTH_SHORT).show();
+//                            }
+                        }
+                        catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.d("Problem", "Error: " + error.getMessage());
+                        Toast.makeText(getApplicationContext()
+                                ,"Nie ma Cię w systemie. Zarejestruj się lub wpisz właściwe dane"
+                                ,Toast.LENGTH_SHORT).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String,String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", username);
+                params.put("password", pwd);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+
+                return headers;
+
+            }
+
+            @Override
+            public byte[] getBody() {
+                try {
+                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
+                }
+            }
+        };
+
+
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.start();
+        requestQueue.add(request);
+
     }
 }
