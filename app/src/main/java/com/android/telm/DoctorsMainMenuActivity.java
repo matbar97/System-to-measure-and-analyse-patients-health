@@ -2,12 +2,15 @@ package com.android.telm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +40,7 @@ import java.util.Map;
 public class DoctorsMainMenuActivity extends AppCompatActivity {
     private Button findPatientButton, addPatientButton, logoutButton, accountButton;
     private TextView professionTextView, doctorNameTextView, studiesNumberTextView;
+//    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +82,11 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.d("Response", response.toString());
                 try {
-                    String docName = response.getString("name");
-                    String docSurname = response.getString("surname");
 
                     doctorNameTextView.setText(response.getString("name")
                             + " " + response.getString("surname"));
-//                    doctorNameTextView.setText(response.getString("Authorization"));
+//                    String token = response.get("token").toString();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -99,17 +102,9 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-//                Intent intent = getIntent();
-//                String name = intent.getStringExtra("username");
-//                Intent intent2 = getIntent();
-//                String password = intent.getStringExtra("password");
-
-
-//                String credentials = name + ":" + password;
-//                String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
-//                String auth = "Bearer " + base64EncodedCredentials;
-//                headers.put("Authorization", auth);
-                headers.put("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2N0b3IiLCJyb2xlcyI6WyJST0xFX0RPQ1RPUiJdLCJpYXQiOjE2MTA2NTg3NzAsImV4cCI6MTYxMDY2MjM3MH0.bpShJintGKonzR4H2IbfI2JeG_odreJIQtRkB0ZrLxI");
+                Intent intent = getIntent();
+                String token = intent.getStringExtra("token");
+                headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
         };
@@ -122,15 +117,14 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
     private void getCountStudiesForDoctor() {
         String URL = "http://192.168.99.1:8080/api/doctor/countstudies";
 
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
-                null, new Response.Listener<JSONObject>() {
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
+                new Response.Listener<String>() {
 
             @Override
-            public void onResponse(JSONObject response) {
-                Log.d("Response", response.toString());
-                studiesNumberTextView.setText(response.toString());
-
-                Toast.makeText(getApplicationContext(), "" + response.toString(), Toast.LENGTH_SHORT).show();
+            public void onResponse(String response) {
+                Log.d("Response", response);
+                studiesNumberTextView.setText(response);
+                Toast.makeText(getApplicationContext(), "" + response, Toast.LENGTH_SHORT).show();
 
             }
         }, new Response.ErrorListener() {
@@ -143,7 +137,9 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2N0b3IiLCJyb2xlcyI6WyJST0xFX0RPQ1RPUiJdLCJpYXQiOjE2MTA2NTg3NzAsImV4cCI6MTYxMDY2MjM3MH0.bpShJintGKonzR4H2IbfI2JeG_odreJIQtRkB0ZrLxI");
+                Intent intent = getIntent();
+                String token = intent.getStringExtra("token");
+                headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
         };
@@ -154,8 +150,14 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
     }
 
     private void goToPatientsList() {
-        Intent intent = new Intent(this, SearchForPatientActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent(getApplicationContext(), SearchForPatientActivity.class);
+//
+            startActivity(intent);
+//        } else { if(!token.isEmpty()) {
+//            intent.putExtra("token", token);
+//            System.out.println(token);
+//            return;
+//        }
     }
 
     private void goToPatientCreation() {

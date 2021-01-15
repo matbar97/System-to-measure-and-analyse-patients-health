@@ -27,6 +27,7 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -94,63 +95,66 @@ public class MainActivity extends AppCompatActivity {
 
         String URL = "http://192.168.99.1:8080/auth/signin";
         final JSONObject jsonBody = new JSONObject();
-        jsonBody.put("username", editTextLogin.getText().toString());
-        jsonBody.put("password", editTextPassword.getText().toString());
+        final String username = editTextLogin.getText().toString();
+        final String pwd = editTextPassword.getText().toString();
+
+        jsonBody.put("username", username);
+        jsonBody.put("password", pwd);
         final String requestBody = jsonBody.toString();
-        // Use HttpURLConnection as the HTTP client
-        // Setup 1 MB disk-based cache for Volley
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
 
-            @Override
-            public void onResponse(String response) {
-                Log.i("VOLLEY", response);
-
-                try {
-                    if(jsonBody.getString("username").contains("doctor")) {
-                        Intent intent = new Intent(getApplicationContext(), DoctorsMainMenuActivity.class);
-                        intent.putExtra("username", editTextLogin.getText().toString());
-                        intent.putExtra("password", editTextPassword.getText().toString());
-                        intent.putExtra("token", "23123");
-                        startActivity(intent);
-//                        Toast toast = Toast.makeText(getApplicationContext(), "Witaj w aplikacji Doktorze", Toast.LENGTH_LONG);
-//                        toast.show();
-                        Toast.makeText(getApplicationContext(), "" + response.toString(), Toast.LENGTH_SHORT).show();
-
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST, URL, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("VOLLEY", response.toString());
+                        try {
+                            String token = response.getString("token");
+                            if (username.contains("doctor")){
+                                Intent intent = new Intent(getApplicationContext(), DoctorsMainMenuActivity.class);
+                                intent.putExtra("token", token);
+                                startActivity(intent);
+                                Toast.makeText(getApplicationContext(), "Witaj " + username, Toast.LENGTH_SHORT).show();
+                            } else if (username.contains("user")) {
+                                Intent intent = new Intent(getApplicationContext(), PatientsMenuActivity.class);
+                                intent.putExtra("token", token);
+                                startActivity(intent);
+                                Toast.makeText(getApplicationContext(), "Witaj " + username, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                    else if(jsonBody.getString("username").contains("user")) {
-                        Intent intent2 = new Intent(getApplicationContext(), PatientsMenuActivity.class);
-                        intent2.putExtra("username", editTextLogin.getText().toString());
-                        intent2.putExtra("password", editTextPassword.getText().toString());
-                        startActivity(intent2);
-                        Toast toast2 = Toast.makeText(getApplicationContext(), "Witaj w aplikacji Pacjencie", Toast.LENGTH_LONG);
-                        toast2.show();
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.d("Problem", "Error: " + error.getMessage());
+                        Toast.makeText(getApplicationContext()
+                                ,"Nie ma Cię w systemie. Zarejestruj się lub wpisz właściwe dane"
+                                ,Toast.LENGTH_SHORT).show();
                     }
-//                        else {
-//                            Toast.makeText(getApplicationContext(),
-//                                    "Wprowadź właściwe dane", Toast.LENGTH_SHORT).show();
-//                        }
-                    } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-
-        }, new Response.ErrorListener() {
+                })
+        {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("VOLLEY", error.toString());
-                Toast toast = Toast.makeText(getApplicationContext(), "Błąd autoryzacji", Toast.LENGTH_LONG);
-                toast.show();
-            }
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return "application/json";
+            protected Map<String,String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", username);
+                params.put("password", pwd);
+                return params;
             }
 
             @Override
-            public byte[] getBody() throws AuthFailureError {
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+
+                return headers;
+
+            }
+
+            @Override
+            public byte[] getBody() {
                 try {
                     return requestBody == null ? null : requestBody.getBytes("utf-8");
                 } catch (UnsupportedEncodingException uee) {
@@ -158,25 +162,92 @@ public class MainActivity extends AppCompatActivity {
                     return null;
                 }
             }
-
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                String responseString = "";
-                if (response != null) {
-                    responseString = String.valueOf(response.statusCode);
-                    // can get more details such as response.headers
-                }
-                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-            }
         };
 
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+//        final JSONObject jsonBody = new JSONObject();
+//        jsonBody.put("username", editTextLogin.getText().toString());
+//        jsonBody.put("password", editTextPassword.getText().toString());
+//        final String requestBody = jsonBody.toString();
+//        // Use HttpURLConnection as the HTTP client
+//        // Setup 1 MB disk-based cache for Volley
+//        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST, URL, new Response.Listener<JSONObject>() {
+//
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                Log.i("VOLLEY", response.toString());
+//
+//                try {
+//                    if(jsonBody.getJSONObject("username").toString().isEmpty()) {
+//                        Intent intent = new Intent(getApplicationContext(), DoctorsMainMenuActivity.class);
+//                        intent.putExtra("username", editTextLogin.getText().toString());
+//                        intent.putExtra("password", editTextPassword.getText().toString());
+//                        intent.putExtra("token", "23123");
+//                        startActivity(intent);
+////                        Toast toast = Toast.makeText(getApplicationContext(), "Witaj w aplikacji Doktorze", Toast.LENGTH_LONG);
+////                        toast.show();
+//                        Toast.makeText(getApplicationContext(), "" + response.toString(), Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                    else if(jsonBody.getString("username").contains("user")) {
+//                        Intent intent2 = new Intent(getApplicationContext(), PatientsMenuActivity.class);
+//                        intent2.putExtra("username", editTextLogin.getText().toString());
+//                        intent2.putExtra("password", editTextPassword.getText().toString());
+//                        startActivity(intent2);
+//                        Toast toast2 = Toast.makeText(getApplicationContext(), "Witaj w aplikacji Pacjencie", Toast.LENGTH_LONG);
+//                        toast2.show();
+//                    }
+////                        else {
+////                            Toast.makeText(getApplicationContext(),
+////                                    "Wprowadź właściwe dane", Toast.LENGTH_SHORT).show();
+////                        }
+//                    } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//
+//
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e("VOLLEY", error.toString());
+//                Toast toast = Toast.makeText(getApplicationContext(), "Błąd autoryzacji", Toast.LENGTH_LONG);
+//                toast.show();
+//            }
+//        }) {
+//            @Override
+//            public String getBodyContentType() {
+//                return "application/json";
+//            }
+//
+//            @Override
+//            public byte[] getBody() {
+//                try {
+//                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+//                } catch (UnsupportedEncodingException uee) {
+//                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+//                    return null;
+//                }
+//            }
+
+//            @Override
+//            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+//                JSONObject responseString = "";
+//                if (response != null) {
+//                    responseString = String.valueOf(response.statusCode);
+//                    // can get more details such as response.headers
+//                }
+//                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response.toString()));
+//            }
+
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
                 3000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.start();
-        requestQueue.add(stringRequest);
+        requestQueue.add(request);
 
     }
 

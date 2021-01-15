@@ -51,8 +51,19 @@
             android:textColor="#2699fb"
             android:ems="10"
             android:fontFamily="sans-serif"
-            android:hint="Imię i nazwisko"
+            android:hint="Imię"
             android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextName2"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:ems="10"
+            android:fontFamily="sans-serif"
+            android:hint="Nazwisko"
+            android:inputType="textPersonName"
+            android:textColor="#2699fb" />
 
         <EditText
             android:id="@+id/editTextPESEL"
@@ -71,8 +82,8 @@
             android:layout_marginLeft="70dp"
             android:textColor="#2699fb"
             android:ems="10"
-            android:hint="Email"
-            android:inputType="textEmailAddress" />
+            android:hint="Login"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/editTextPassword"
