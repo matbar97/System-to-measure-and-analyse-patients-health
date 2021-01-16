@@ -78,10 +78,13 @@ public class SearchForPatientActivity extends AppCompatActivity {
                     Patient patient = new Patient();
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
-//                        patient.setId(String.valueOf(jsonObject.get("id")));
-                        patient.setName(jsonObject.get("name").toString());
-                        patient.setSurname(jsonObject.get("surname").toString());
-                        patient.setPesel(jsonObject.get("pesel").toString());
+                        String name, surname, pesel;
+                        name = jsonObject.getString("name");
+                        surname = jsonObject.getString("surname");
+                        pesel = jsonObject.getString("pesel");
+                        patient.setName(name);
+                        patient.setSurname(surname);
+                        patient.setPesel(pesel);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -104,6 +107,7 @@ public class SearchForPatientActivity extends AppCompatActivity {
                 Intent intent = getIntent();
                 token = intent.getStringExtra("token");
                 headers.put("Authorization", "Bearer " + token);
+                headers.put("Content-Type", "application/json");
                 return headers;
             }
 

@@ -41,8 +41,6 @@ public class PatientCreationActivity extends AppCompatActivity {
         nameEditText = findViewById(R.id.nameEditText);
         surnameEditText = findViewById(R.id.surnameEditText);
         peselEditText = findViewById(R.id.peselEditText);
-        Intent intent = getIntent();
-        token = intent.getStringExtra("token");
 
         addPatientButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,11 +73,9 @@ public class PatientCreationActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        //                            token = response.getString("token");
                         Log.i("VOLLEY", response.toString());
                         Intent intent = new Intent(getApplicationContext(), PatientDataFromDocPointOfViewActivity.class);
 
-                        intent.putExtra("token", token);
                         intent.putExtra("name", name);
                         intent.putExtra("surname", surname);
                         intent.putExtra("pesel", pesel);
@@ -103,15 +99,18 @@ public class PatientCreationActivity extends AppCompatActivity {
             @Override
             protected Map<String,String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("name", name);
-                params.put("surname", surname);
-                params.put("pesel", pesel);
+//                params.put("name", name);
+//                params.put("surname", surname);
+//                params.put("pesel", pesel);
                 return params;
             }
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
+                Intent intent = getIntent();
+                token = intent.getStringExtra("token");
+                headers.put("Authorization", "Bearer " + token);
                 headers.put("Content-Type", "application/json");
                 return headers;
 

@@ -83,7 +83,8 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
                 Log.d("Response", response.toString());
                 try {
 
-                    doctorNameTextView.setText(response.getString("name")
+                    doctorNameTextView.setText(
+                            response.getString("name")
                             + " " + response.getString("surname"));
 
                 } catch (JSONException e) {
@@ -137,7 +138,7 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 Intent intent = getIntent();
-                String token = intent.getStringExtra("token");
+                token = intent.getStringExtra("token");
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
@@ -150,10 +151,10 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
 
     private void goToPatientsList() {
         Intent intent = new Intent(getApplicationContext(), SearchForPatientActivity.class);
-//        intent.putExtra("token", token);
+        intent.putExtra("token", token);
+        System.out.println(token);
         startActivity(intent);
 //        } else { if(!token.isEmpty()) {
-            System.out.println(token);
 //            return;
 //        }
     }

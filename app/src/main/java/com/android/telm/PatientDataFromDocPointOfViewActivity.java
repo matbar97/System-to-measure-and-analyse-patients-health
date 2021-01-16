@@ -29,7 +29,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
 
     private Button goBackButton_PatientData, addStudyButton;
     private TextView actualPatientNameImageView, numberOfRecordsTextView;
-    String token;
+    String token, name, surname;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +40,9 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
         numberOfRecordsTextView = findViewById(R.id.numberOfRecordsTextView);
         Intent intent = getIntent();
         token = intent.getStringExtra("token");
+        name = intent.getStringExtra("name");
+        surname = intent.getStringExtra("surname");
+
         addStudyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,15 +61,8 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("Response", response.toString());
-                try {
+                actualPatientNameImageView.setText(name + " " + surname);
 
-                    actualPatientNameImageView.setText(response.getString("name")
-                            + " " + response.getString("surname"));
-                    token = response.get("token").toString();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 Toast.makeText(getApplicationContext(), "" + response.toString(), Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
@@ -77,11 +73,12 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
             }
         }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 Intent intent = getIntent();
                 token = intent.getStringExtra("token");
                 headers.put("Authorization", "Bearer " + token);
+                headers.put("Content-Type", "application/json");
                 return headers;
             }
         };
