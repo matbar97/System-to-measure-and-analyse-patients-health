@@ -29,7 +29,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
 
     private Button goBackButton_PatientData, addStudyButton;
     private TextView actualPatientNameImageView, numberOfRecordsTextView;
-    String token, name, surname;
+    String token, name, surname, pesel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +42,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
         token = intent.getStringExtra("token");
         name = intent.getStringExtra("name");
         surname = intent.getStringExtra("surname");
-
+        pesel = intent.getStringExtra("pesel");
         addStudyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +54,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
     }
 
     private void getPatientCardCreatedByDoctor() {
-        String URL = "http://192.168.99.1:8080/me";
+        String URL = "http://192.168.99.1:8080/api/doctor/patient/" + pesel;
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
                 null, new Response.Listener<JSONObject>() {
 
@@ -62,7 +62,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.d("Response", response.toString());
                 actualPatientNameImageView.setText(name + " " + surname);
-
                 Toast.makeText(getApplicationContext(), "" + response.toString(), Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
@@ -78,7 +77,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
                 Intent intent = getIntent();
                 token = intent.getStringExtra("token");
                 headers.put("Authorization", "Bearer " + token);
-                headers.put("Content-Type", "application/json");
+//                headers.put("Content-Type", "application/json");
                 return headers;
             }
         };

@@ -1,6 +1,7 @@
 package com.android.telm;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,11 +40,19 @@ public class SearchForPatientActivity extends AppCompatActivity {
 
     private Button arrowBackSearchForPatientButton;
     private EditText searchForPatientEditText;
-    RecyclerView recyclerView;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager layoutManager;
-    List<Patient> patientList;
+//    RecyclerView recyclerView;
+//    RecyclerView.Adapter mAdapter;
+//    RecyclerView.LayoutManager layoutManager;
+//    List<Patient> patientList;
     String token;
+//    private DividerItemDecoration dividerItemDecoration;
+
+    private RecyclerView mList;
+
+    private LinearLayoutManager linearLayoutManager;
+    private DividerItemDecoration dividerItemDecoration;
+    private List<Patient> patientList;
+    private RecyclerView.Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +61,33 @@ public class SearchForPatientActivity extends AppCompatActivity {
         arrowBackSearchForPatientButton = findViewById(R.id.arrowBackSearchForPatientButton);
         searchForPatientEditText = findViewById(R.id.searchForPatientEditText);
 
-        recyclerView = findViewById(R.id.patientsRecyclerView);
 
-        recyclerView.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(SearchForPatientActivity.this);
+//        recyclerView = findViewById(R.id.patientsRecyclerView);
+//        patientList = new ArrayList<>();
+//        mAdapter = new PatientRecyclerAdapter(getApplicationContext(),patientList);
+//        layoutManager = new LinearLayoutManager(SearchForPatientActivity.this);
+//        ((LinearLayoutManager) layoutManager).setOrientation(LinearLayoutManager.VERTICAL);
+//        dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), ((LinearLayoutManager) layoutManager).getOrientation());
+//
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.addItemDecoration(dividerItemDecoration);
+//        recyclerView.setAdapter(mAdapter);
 
-        recyclerView.setLayoutManager(layoutManager);
+        mList = findViewById(R.id.patientsRecyclerView);
 
+        patientList = new ArrayList<>();
+        adapter = new PatientRecyclerAdapter(getApplicationContext(),patientList);
+
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
+
+        mList.setHasFixedSize(true);
+        mList.setLayoutManager(linearLayoutManager);
+        mList.addItemDecoration(dividerItemDecoration);
+        mList.setAdapter(adapter);
 
         getLoadPatients();
 
@@ -67,32 +95,43 @@ public class SearchForPatientActivity extends AppCompatActivity {
 
     private void getLoadPatients() {
 
-        String URL = "http://192.168.99.1:8080/api/doctor/listpatients";
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+        String URL = "http://192.168.99.1:8080/api/doctor/listpatients/";
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET ,URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 patientList = new ArrayList<>();
                 for (int i = 0; i < response.length(); i++) {
-                    Patient patient = new Patient();
                     try {
+//                        JSONObject jsonObject = response.getJSONObject(i);
+//                        String name, surname, pesel;
+//                        name = jsonObject.getString("name");
+//                        surname = jsonObject.getString("surname");
+//                        pesel = jsonObject.getString("pesel");
+//
+//                        patient = new Patient(name, surname, pesel);
+//                        patientList.add(patient);
                         JSONObject jsonObject = response.getJSONObject(i);
-                        String name, surname, pesel;
-                        name = jsonObject.getString("name");
-                        surname = jsonObject.getString("surname");
-                        pesel = jsonObject.getString("pesel");
-                        patient.setName(name);
-                        patient.setSurname(surname);
-                        patient.setPesel(pesel);
+
+                        Patient patient = new Patient();
+                        patient.setName(jsonObject.getString("name"));
+                        patient.setSurname(jsonObject.getString("surname"));
+                        patient.setPesel(jsonObject.getString("pesel"));
+
+                        patientList.add(patient);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        progressDialog.dismiss();
                     }
-                    patientList.add(patient);
                 }
-
-                mAdapter = new PatientRecyclerAdapter(SearchForPatientActivity.this, patientList);
-                recyclerView.setAdapter(mAdapter);
+                adapter.notifyDataSetChanged();
+                progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -107,7 +146,7 @@ public class SearchForPatientActivity extends AppCompatActivity {
                 Intent intent = getIntent();
                 token = intent.getStringExtra("token");
                 headers.put("Authorization", "Bearer " + token);
-                headers.put("Content-Type", "application/json");
+//                headers.put("Content-Type", "application/json");
                 return headers;
             }
 
