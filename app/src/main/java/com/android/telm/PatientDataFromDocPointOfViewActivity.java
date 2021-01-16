@@ -54,7 +54,8 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
     }
 
     private void getPatientCardCreatedByDoctor() {
-        String URL = "http://192.168.99.1:8080/api/doctor/patient/" + pesel;
+        String peselNew = pesel;
+        String URL = "http://192.168.99.1:8080/api/doctor/patient/" + peselNew;
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
                 null, new Response.Listener<JSONObject>() {
 

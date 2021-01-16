@@ -41,6 +41,8 @@ public class PatientCreationActivity extends AppCompatActivity {
         nameEditText = findViewById(R.id.nameEditText);
         surnameEditText = findViewById(R.id.surnameEditText);
         peselEditText = findViewById(R.id.peselEditText);
+        Intent intent = getIntent();
+        token = intent.getStringExtra("token");
 
         addPatientButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +77,7 @@ public class PatientCreationActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Log.i("VOLLEY", response.toString());
                         Intent intent = new Intent(getApplicationContext(), PatientDataFromDocPointOfViewActivity.class);
-
+                        intent.putExtra("token", token);
                         intent.putExtra("name", name);
                         intent.putExtra("surname", surname);
                         intent.putExtra("pesel", pesel);
@@ -108,8 +110,7 @@ public class PatientCreationActivity extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                Intent intent = getIntent();
-                token = intent.getStringExtra("token");
+
                 headers.put("Authorization", "Bearer " + token);
                 headers.put("Content-Type", "application/json");
                 return headers;
