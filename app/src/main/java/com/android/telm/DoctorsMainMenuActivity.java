@@ -74,7 +74,7 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
 
     private void getLoginData() {
 
-        String URL = "http://192.168.99.1:8080/me";
+        String URL = "http://192.168.1.11:8080/me";
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
                 null, new Response.Listener<JSONObject>() {
 
@@ -115,7 +115,7 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
     }
 
     private void getCountStudiesForDoctor() {
-        String URL = "http://192.168.99.1:8080/api/doctor/countstudies";
+        String URL = "http://192.168.1.11:8080/api/doctor/countstudies";
 
         StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
