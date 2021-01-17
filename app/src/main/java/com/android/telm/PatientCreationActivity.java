@@ -48,7 +48,7 @@ public class PatientCreationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    goToPatientsData();
+                    postDataOfNewPatients();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -56,7 +56,7 @@ public class PatientCreationActivity extends AppCompatActivity {
         });
     }
 
-    private void goToPatientsData() throws JSONException {
+    private void postDataOfNewPatients() throws JSONException {
 
         String URL = "http://192.168.99.1:8080/api/doctor/patient/add";
         final JSONObject jsonBody = new JSONObject();
@@ -76,7 +76,8 @@ public class PatientCreationActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.i("VOLLEY", response.toString());
-                        Intent intent = new Intent(getApplicationContext(), PatientDataFromDocPointOfViewActivity.class);
+                        Intent intent = new Intent(getApplicationContext(),
+                                PatientDataFromDocPointOfViewActivity.class);
                         intent.putExtra("token", token);
                         intent.putExtra("name", name);
                         intent.putExtra("surname", surname);
@@ -101,9 +102,9 @@ public class PatientCreationActivity extends AppCompatActivity {
             @Override
             protected Map<String,String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-//                params.put("name", name);
-//                params.put("surname", surname);
-//                params.put("pesel", pesel);
+                params.put("name", name);
+                params.put("surname", surname);
+                params.put("pesel", pesel);
                 return params;
             }
 

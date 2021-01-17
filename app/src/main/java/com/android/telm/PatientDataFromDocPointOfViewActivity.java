@@ -28,21 +28,23 @@ import java.util.Map;
 public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
 
     private Button goBackButton_PatientData, addStudyButton;
-    private TextView actualPatientNameImageView, numberOfRecordsTextView;
+    private TextView actualPatientNameTextView, numberOfRecordsTextView;
     String token, name, surname, pesel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_data_from_doc_point_of_view);
-        goBackButton_PatientData = findViewById(R.id.goBackButton);
-        addStudyButton = findViewById(R.id.addStudyButton);
-        actualPatientNameImageView = findViewById(R.id.actualPatientNameImageView);
-        numberOfRecordsTextView = findViewById(R.id.numberOfRecordsTextView);
         Intent intent = getIntent();
         token = intent.getStringExtra("token");
         name = intent.getStringExtra("name");
         surname = intent.getStringExtra("surname");
         pesel = intent.getStringExtra("pesel");
+
+        goBackButton_PatientData = findViewById(R.id.goBackButton);
+        addStudyButton = findViewById(R.id.addStudyButton);
+        actualPatientNameTextView = findViewById(R.id.actualPatientNameImageView);
+        numberOfRecordsTextView = findViewById(R.id.numberOfRecordsTextView);
+
         addStudyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,22 +56,25 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
     }
 
     private void getPatientCardCreatedByDoctor() {
+
         String peselNew = pesel;
+
         String URL = "http://192.168.99.1:8080/api/doctor/patient/" + peselNew;
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
+        System.out.println(URL);
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.DEPRECATED_GET_OR_POST, URL,
                 null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("Response", response.toString());
-                actualPatientNameImageView.setText(name + " " + surname);
-                Toast.makeText(getApplicationContext(), "" + response.toString(), Toast.LENGTH_SHORT).show();
+                actualPatientNameTextView.setText(name + " " + surname);
+                Toast.makeText(getApplicationContext(), "Siema!", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("Error", "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), "" + error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -77,10 +82,12 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 Intent intent = getIntent();
                 token = intent.getStringExtra("token");
+                System.out.println("PatientDataFromDocPointOfView token: " + token);
                 headers.put("Authorization", "Bearer " + token);
 //                headers.put("Content-Type", "application/json");
                 return headers;
             }
+
         };
 
         RequestQueue queue = Volley.newRequestQueue(this);

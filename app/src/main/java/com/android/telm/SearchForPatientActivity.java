@@ -7,22 +7,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -30,22 +25,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SearchForPatientActivity extends AppCompatActivity {
+public class SearchForPatientActivity extends AppCompatActivity implements PatientRecyclerAdapter.OnPatientListener {
 
     private Button arrowBackSearchForPatientButton;
     private EditText searchForPatientEditText;
-//    RecyclerView recyclerView;
-//    RecyclerView.Adapter mAdapter;
-//    RecyclerView.LayoutManager layoutManager;
-//    List<Patient> patientList;
+
     String token;
-//    private DividerItemDecoration dividerItemDecoration;
 
     private RecyclerView mList;
 
@@ -61,37 +51,36 @@ public class SearchForPatientActivity extends AppCompatActivity {
         arrowBackSearchForPatientButton = findViewById(R.id.arrowBackSearchForPatientButton);
         searchForPatientEditText = findViewById(R.id.searchForPatientEditText);
 
-
-
-//        recyclerView = findViewById(R.id.patientsRecyclerView);
-//        patientList = new ArrayList<>();
-//        mAdapter = new PatientRecyclerAdapter(getApplicationContext(),patientList);
-//        layoutManager = new LinearLayoutManager(SearchForPatientActivity.this);
-//        ((LinearLayoutManager) layoutManager).setOrientation(LinearLayoutManager.VERTICAL);
-//        dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), ((LinearLayoutManager) layoutManager).getOrientation());
-//
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.addItemDecoration(dividerItemDecoration);
-//        recyclerView.setAdapter(mAdapter);
-
         mList = findViewById(R.id.patientsRecyclerView);
 
         patientList = new ArrayList<>();
-        adapter = new PatientRecyclerAdapter(getApplicationContext(),patientList);
+
+        getLoadPatients();
+
+        adapter = new PatientRecyclerAdapter(getApplicationContext(), patientList, this);
 
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
-
         mList.setHasFixedSize(true);
         mList.setLayoutManager(linearLayoutManager);
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
 
-        getLoadPatients();
-
     }
+
+    @Override
+    public void onPatientClick(int position) {
+        Patient patientClicked = patientList.get(position);
+        Toast.makeText(getApplicationContext(), "Kliknieto w pacjenta: " + patientClicked.getName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), PatientDataFromDocPointOfViewActivity.class);
+        intent.putExtra("name", patientClicked.getName());
+        intent.putExtra("surname", patientClicked.getSurname());
+        intent.putExtra("pesel", patientClicked.getPesel());
+        intent.putExtra("token", token);
+        startActivity(intent);
+    }
+
 
     private void getLoadPatients() {
 
@@ -99,23 +88,14 @@ public class SearchForPatientActivity extends AppCompatActivity {
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        String URL = "http://192.168.99.1:8080/api/doctor/listpatients/";
+        String URL = "http://192.168.99.1:8080/api/doctor/listpatients";
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET ,URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                patientList = new ArrayList<>();
                 for (int i = 0; i < response.length(); i++) {
                     try {
-//                        JSONObject jsonObject = response.getJSONObject(i);
-//                        String name, surname, pesel;
-//                        name = jsonObject.getString("name");
-//                        surname = jsonObject.getString("surname");
-//                        pesel = jsonObject.getString("pesel");
-//
-//                        patient = new Patient(name, surname, pesel);
-//                        patientList.add(patient);
                         JSONObject jsonObject = response.getJSONObject(i);
 
                         Patient patient = new Patient();
@@ -124,12 +104,14 @@ public class SearchForPatientActivity extends AppCompatActivity {
                         patient.setPesel(jsonObject.getString("pesel"));
 
                         patientList.add(patient);
-
+                        System.out.println(patientList.size());
                     } catch (JSONException e) {
                         e.printStackTrace();
                         progressDialog.dismiss();
                     }
                 }
+                System.out.println(patientList.size());
+
                 adapter.notifyDataSetChanged();
                 progressDialog.dismiss();
             }
@@ -145,6 +127,7 @@ public class SearchForPatientActivity extends AppCompatActivity {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 Intent intent = getIntent();
                 token = intent.getStringExtra("token");
+                System.out.println("SearchForPatientToken: "+token);
                 headers.put("Authorization", "Bearer " + token);
 //                headers.put("Content-Type", "application/json");
                 return headers;
@@ -152,5 +135,8 @@ public class SearchForPatientActivity extends AppCompatActivity {
 
         };
         queue.add(jsonArrayRequest);
+        System.out.println(patientList.size());
     }
+
+
 }
