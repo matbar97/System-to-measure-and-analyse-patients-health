@@ -154,9 +154,6 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
         intent.putExtra("token", token);
         System.out.println(token);
         startActivity(intent);
-//        } else { if(!token.isEmpty()) {
-//            return;
-//        }
     }
 
     private void goToPatientCreation() {
