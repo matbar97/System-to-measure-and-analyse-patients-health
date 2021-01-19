@@ -86,10 +86,11 @@ public class AddStudyActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(),
                                 PatientDataFromDocPointOfViewActivity.class);
                         intent.putExtra("observations", observations);
-                        intent.putExtra("patientPesel", pesel);
+                        intent.putExtra("pesel", pesel);
                         intent.putExtra("name", name);
                         intent.putExtra("surname", surname);
                         intent.putExtra("token", token);
+
                         System.out.println("Token from AddStudyAct: ... " + token);
                         startActivity(intent);
 

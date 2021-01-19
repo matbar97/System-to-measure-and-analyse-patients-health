@@ -33,11 +33,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
+public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity implements StudyRecyclerAdapterFromDocPointOfView.OnPatientListener {
 
     private Button goBackButton_PatientData, addStudyButton;
     private TextView actualPatientNameTextView, numberOfRecordsTextView;
-    String token, namePatient, surnamePatient, patientPesel, doctorsPesel, doctorName, doctorSurname;
+    String token, namePatient, surnamePatient, patientPesel, doctorsPesel,
+            doctorName, doctorSurname, studyObservations;
     private RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
@@ -51,19 +52,21 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
 
         mList = findViewById(R.id.studyListFromDocRecyclerView);
 
+        //Intent from PreviousActivity
         Intent intent = getIntent();
         token = intent.getStringExtra("token");
         namePatient = intent.getStringExtra("name");
         surnamePatient = intent.getStringExtra("surname");
         patientPesel = intent.getStringExtra("pesel");
+        studyObservations = intent.getStringExtra("observations");
 
-//        getDoctorInfoAsADoctor();
+        //getDoctorInfoAsADoctor();
 
         studyList = new ArrayList<>();
 
         getListOfStudiesOfSinglePatient();
 
-        adapter = new StudyRecyclerAdapterFromDocPointOfView(getApplicationContext(), studyList);
+        adapter = new StudyRecyclerAdapterFromDocPointOfView(getApplicationContext(), studyList, this);
 
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -89,57 +92,16 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
 //        getNumberOfStudiesForPatient();
     }
 
-//    private List<String> getDoctorInfoAsADoctor(String doctorPesel)
-//    {
-//        String URL = "http://192.168.99.1:8080/api/doctor/info/" + doctorPesel;
-//        List<String> nameSurnameListDoctor;
-//
-//        System.out.println(URL);
-//        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
-//                null, new Response.Listener<JSONObject>() {
-//
-//            @Override
-//            public void onResponse(JSONObject response) {
-////                String doctorName = null, doctorSurname;
-//                Log.d("Response", response.toString());
-////                actualPatientNameTextView.setText(name + " " + surname);
-////                response.getString("name", doctorName);
-////                response.getString("surname", doctorSurname);
-//
-//                Toast.makeText(getApplicationContext(), "Siema!", Toast.LENGTH_SHORT).show();
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                VolleyLog.d("Error", "Error: " + error.getMessage());
-//                Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_LONG).show();
-//            }
-//        }) {
-//            @Override
-//            public Map<String, String> getHeaders() {
-//                HashMap<String, String> headers = new HashMap<String, String>();
-//                Intent intent = getIntent();
-//                token = intent.getStringExtra("token");
-//                System.out.println("PatientDataFromDocPointOfView token: " + token);
-//                headers.put("Authorization", "Bearer " + token);
-////                headers.put("Content-Type", "application/json");
-//                return headers;
-//            }
-//
-//        };
-//
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.start();
-//        queue.add(req);
-//    }
-
     private void getListOfStudiesOfSinglePatient() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
-        String URL = "http://192.168.99.1:8080/api/doctor/patient/" + patientPesel + "/liststudies";
+        String peselNew = patientPesel;
+        System.out.println("Pesel Kowalskiego: " +peselNew);
+        System.out.println("Token: " + token);
+        System.out.println("Obserwacje: " + studyObservations);
 
-
+        String URL = "http://192.168.99.1:8080/api/doctor/patient/" + peselNew + "/liststudies";
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
             @Override
@@ -151,12 +113,11 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
                         Study study = new Study();
                         study.setObservations(jsonObject.getString("observations"));
 //                        List<String> docNameSurname = getDoctorInfoAsADoctor(jsonObject.getString("doctorPesel"));
-
+                        study.setDoctorName("Marek Mostowiak");
 //                        study.setDoctorName(docNameSurname.get(0) + " " + docNameSurname.get(1));
 
-
-
                         studyList.add(study);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                         progressDialog.dismiss();
@@ -175,44 +136,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonArrayRequest);
     }
-
-//    private void getNumberOfStudiesForPatient() {
-//        String peselNew = pesel;
-//
-//        String URL = "http://192.168.99.1:8080/api/doctor/patient/" + peselNew;
-//        System.out.println(URL);
-//        JsonObjectRequest req = new JsonObjectRequest(Request.Method.DEPRECATED_GET_OR_POST, URL,
-//                null, new Response.Listener<JSONObject>() {
-//
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                Log.d("Response", response.toString());
-//                actualPatientNameTextView.setText(name + " " + surname);
-//                Toast.makeText(getApplicationContext(), "Siema!", Toast.LENGTH_SHORT).show();
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                VolleyLog.d("Error", "Error: " + error.getMessage());
-//                Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_LONG).show();
-//            }
-//        }) {
-//            @Override
-//            public Map<String, String> getHeaders() {
-//                HashMap<String, String> headers = new HashMap<String, String>();
-//                Intent intent = getIntent();
-//                token = intent.getStringExtra("token");
-//                System.out.println("PatientDataFromDocPointOfView token: " + token);
-//                headers.put("Authorization", "Bearer " + token);
-////                headers.put("Content-Type", "application/json");
-//                return headers;
-//            }
-//        };
-//
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.start();
-//        queue.add(req);
-//    }
 
     private void getPatientCardCreatedByDoctor() {
 
@@ -263,4 +186,95 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity {
         intent.putExtra("token", token);
         startActivity(intent);
     }
+
+    @Override
+    public void onStudyClick(int position) {
+        Study studyClicked = studyList.get(position);
+    }
+
+
+//    private List<String> getDoctorInfoAsADoctor(String doctorPesel)
+//    {
+//        String URL = "http://192.168.99.1:8080/api/doctor/info/" + doctorPesel;
+//        List<String> nameSurnameListDoctor;
+//
+//        System.out.println(URL);
+//        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
+//                null, new Response.Listener<JSONObject>() {
+//
+//            @Override
+//            public void onResponse(JSONObject response) {
+////                String doctorName = null, doctorSurname;
+//                Log.d("Response", response.toString());
+////                actualPatientNameTextView.setText(name + " " + surname);
+////                response.getString("name", doctorName);
+////                response.getString("surname", doctorSurname);
+//
+//                Toast.makeText(getApplicationContext(), "Siema!", Toast.LENGTH_SHORT).show();
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                VolleyLog.d("Error", "Error: " + error.getMessage());
+//                Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_LONG).show();
+//            }
+//        }) {
+//            @Override
+//            public Map<String, String> getHeaders() {
+//                HashMap<String, String> headers = new HashMap<String, String>();
+//                Intent intent = getIntent();
+//                token = intent.getStringExtra("token");
+//                System.out.println("PatientDataFromDocPointOfView token: " + token);
+//                headers.put("Authorization", "Bearer " + token);
+////                headers.put("Content-Type", "application/json");
+//                return headers;
+//            }
+//
+//        };
+//
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.start();
+//        queue.add(req);
+//    }
+
+
+
+//    private void getNumberOfStudiesForPatient() {
+//        String peselNew = pesel;
+//
+//        String URL = "http://192.168.99.1:8080/api/doctor/patient/" + peselNew;
+//        System.out.println(URL);
+//        JsonObjectRequest req = new JsonObjectRequest(Request.Method.DEPRECATED_GET_OR_POST, URL,
+//                null, new Response.Listener<JSONObject>() {
+//
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                Log.d("Response", response.toString());
+//                actualPatientNameTextView.setText(name + " " + surname);
+//                Toast.makeText(getApplicationContext(), "Siema!", Toast.LENGTH_SHORT).show();
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                VolleyLog.d("Error", "Error: " + error.getMessage());
+//                Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_LONG).show();
+//            }
+//        }) {
+//            @Override
+//            public Map<String, String> getHeaders() {
+//                HashMap<String, String> headers = new HashMap<String, String>();
+//                Intent intent = getIntent();
+//                token = intent.getStringExtra("token");
+//                System.out.println("PatientDataFromDocPointOfView token: " + token);
+//                headers.put("Authorization", "Bearer " + token);
+////                headers.put("Content-Type", "application/json");
+//                return headers;
+//            }
+//        };
+//
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.start();
+//        queue.add(req);
+//    }
+
 }

@@ -17,42 +17,61 @@ import java.util.List;
 public class StudyRecyclerAdapterFromDocPointOfView extends RecyclerView.Adapter<StudyRecyclerAdapterFromDocPointOfView.ViewHolder> {
 
     private Context context;
-    private List<Study> list;
+    private List<Study> studyList;
 
-    public StudyRecyclerAdapterFromDocPointOfView(Context context, List<Study> list) {
+    //declare interface
+    private StudyRecyclerAdapterFromDocPointOfView.OnPatientListener mOnStudyListener;
+
+
+
+    public StudyRecyclerAdapterFromDocPointOfView(Context context, List<Study> studyList, StudyRecyclerAdapterFromDocPointOfView.OnPatientListener mOnStudyListener) {
         this.context = context;
-        this.list = list;
+        this.studyList = studyList;
+//        this.mOnPatientListener = mOnPatientListener;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StudyRecyclerAdapterFromDocPointOfView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.study_item, parent, false);
-        return new ViewHolder(v);
+        return new StudyRecyclerAdapterFromDocPointOfView.ViewHolder(v, mOnStudyListener);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Study study = list.get(position);
-
-        holder.textObservations.setText(study.getObservations());
-        holder.textDoctorName.setText(study.getDoctorName());
+    public void onBindViewHolder(final StudyRecyclerAdapterFromDocPointOfView.ViewHolder holder, final int position) {
+        Study study = studyList.get(position);
+        holder.pDoctorName.setText(study.getDoctorName());
+        holder.pObservations.setText(study.getObservations());
 
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return studyList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textDoctorName, textObservations;
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        StudyRecyclerAdapterFromDocPointOfView.OnPatientListener onStudyListener;
+        public TextView pDoctorName;
+        public TextView pObservations;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, StudyRecyclerAdapterFromDocPointOfView.OnPatientListener onPatientListener) {
             super(itemView);
 
-            textDoctorName = itemView.findViewById(R.id.doctors_surname_txt);
-            textObservations = itemView.findViewById(R.id.observations_txt);
+            pDoctorName = itemView.findViewById(R.id.doctors_surname_txt);
+            pObservations = itemView.findViewById(R.id.observations_txt);
+            this.onStudyListener = onPatientListener;
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            onStudyListener.onStudyClick(getAdapterPosition());
+        }
+    }
+
+    //make interface like this
+    public interface OnPatientListener {
+        void onStudyClick(int position);
     }
 
 }
