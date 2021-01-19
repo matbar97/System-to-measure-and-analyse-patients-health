@@ -52,9 +52,7 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
         searchForPatientEditText = findViewById(R.id.searchForPatientEditText);
 
         mList = findViewById(R.id.patientsRecyclerView);
-
         patientList = new ArrayList<>();
-
         getLoadPatients();
 
         adapter = new PatientRecyclerAdapter(getApplicationContext(), patientList, this);

@@ -40,7 +40,7 @@ import java.util.Map;
 public class DoctorsMainMenuActivity extends AppCompatActivity {
     private Button findPatientButton, addPatientButton, logoutButton, accountButton;
     private TextView professionTextView, doctorNameTextView, studiesNumberTextView, patientsNumberTextView;
-    String token;
+    String token, doctorName, doctorSurname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +84,9 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.d("Response", response.toString());
                 try {
-
-                    doctorNameTextView.setText(
-                            response.getString("name")
-                            + " " + response.getString("surname"));
+                    doctorName = response.getString("name");
+                    doctorSurname = response.getString("surname");
+                    doctorNameTextView.setText(doctorName + " " + doctorSurname);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

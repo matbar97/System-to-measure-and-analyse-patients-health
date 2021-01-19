@@ -37,7 +37,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 
     private Button goBackButton_PatientData, addStudyButton;
     private TextView actualPatientNameTextView, numberOfRecordsTextView;
-    String token, namePatient, surnamePatient, patientPesel, doctorsPesel,
+    String token, namePatient, surnamePatient, patientPesel, doctorsPesel, dateOfStudy,
             doctorName, doctorSurname, studyObservations;
     private RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
@@ -97,7 +97,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         progressDialog.setMessage("Loading...");
         progressDialog.show();
         String peselNew = patientPesel;
-        System.out.println("Pesel Kowalskiego: " +peselNew);
+        System.out.println("Pesel Kowalskiego: " + peselNew);
         System.out.println("Token: " + token);
         System.out.println("Obserwacje: " + studyObservations);
 
@@ -109,11 +109,13 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
+                        doctorsPesel = jsonObject.getString("doctorPesel");
+                        dateOfStudy = jsonObject.getString("dateOfStudy");
 
-                        Study study = new Study();
+                        Study study =  new Study();
                         study.setObservations(jsonObject.getString("observations"));
 //                        List<String> docNameSurname = getDoctorInfoAsADoctor(jsonObject.getString("doctorPesel"));
-                        study.setDoctorName("Marek Mostowiak");
+                        study.setDoctorName(doctorsPesel + " " + dateOfStudy);
 //                        study.setDoctorName(docNameSurname.get(0) + " " + docNameSurname.get(1));
 
                         studyList.add(study);
@@ -132,7 +134,20 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                 Log.e("Volley", error.toString());
                 progressDialog.dismiss();
             }
-        });
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+//                Intent intent = getIntent();
+//            token = intent.getStringExtra("token");
+                System.out.println("SearchForPatientToken: " + token);
+                headers.put("Authorization", "Bearer " + token);
+//                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
+
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonArrayRequest);
     }
