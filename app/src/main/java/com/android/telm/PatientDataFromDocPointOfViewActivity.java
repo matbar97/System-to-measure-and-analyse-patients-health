@@ -33,12 +33,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity implements StudyRecyclerAdapterFromDocPointOfView.OnPatientListener {
+public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity implements StudyRecyclerAdapterFromDocPointOfView.OnStudyListener {
 
     private Button goBackButton_PatientData, addStudyButton;
     private TextView actualPatientNameTextView, numberOfRecordsTextView;
     String token, namePatient, surnamePatient, patientPesel, doctorsPesel, dateOfStudy,
-            nameOfDoctorFromStudy, surnameOfDoctorFromStudy, studyObservations;
+            nameOfDoctorFromStudy, surnameOfDoctorFromStudy, studyObservations, wholeNameOfDoctorFromStudy;
     private RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
@@ -96,7 +96,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 
         String URL = "http://192.168.99.1:8080/api/doctor/info/" + doctorsPesel;
         System.out.println(doctorsPesel + " ten pesel nalezy do doktora ktory stworzyl badanie");
-        final String wholeNameOfDoctorFromStudy;
+//        final String wholeName;
 
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
                 null, new Response.Listener<JSONObject>() {
@@ -105,10 +105,11 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
             public void onResponse(JSONObject response) {
                 Log.d("Response", response.toString());
 //                actualPatientNameTextView.setText(namePatient + " " + surnamePatient);
-//                Toast.makeText(getApplicationContext(), "Siema!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Siema!", Toast.LENGTH_SHORT).show();
                 try {
                     nameOfDoctorFromStudy = response.getString("name");
                     surnameOfDoctorFromStudy = response.getString("surname");
+                    System.out.println(nameOfDoctorFromStudy + " " + surnameOfDoctorFromStudy + " <- czy działa");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -129,7 +130,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                 token = intent.getStringExtra("token");
                 System.out.println("PatientDataFromDocPointOfView token: " + token);
                 headers.put("Authorization", "Bearer " + token);
-//                headers.put("Content-Type", "application/json");
                 return headers;
             }
 
@@ -138,9 +138,10 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.start();
         queue.add(req);
+        System.out.println(nameOfDoctorFromStudy + " " + surnameOfDoctorFromStudy + " <- czy działa");
 
-        wholeNameOfDoctorFromStudy = nameOfDoctorFromStudy+ " " + surnameOfDoctorFromStudy;
-        return wholeNameOfDoctorFromStudy;
+        return nameOfDoctorFromStudy+ " " + surnameOfDoctorFromStudy;
+
     }
 
     private void getListOfStudiesOfSinglePatient() {
@@ -164,10 +165,9 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                         dateOfStudy = jsonObject.getString("dateOfStudy");
 
                         String wholeDoctorName = getNameAndSurnameOfDoctoryFromStudy(doctorsPesel);
-
-                        Study study =  new Study();
-                        study.setObservations(jsonObject.getString("observations"));
-//                        List<String> docNameSurname = getDoctorInfoAsADoctor(jsonObject.getString("doctorPesel"));
+                        String observations = jsonObject.getString("observations");
+                        Study study = new Study();
+                        study.setObservations(observations);
                         study.setDoctorName(wholeDoctorName);
 
                         studyList.add(study);
@@ -257,6 +257,11 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
     @Override
     public void onStudyClick(int position) {
         Study studyClicked = studyList.get(position);
+        Intent intent = new Intent(getApplicationContext(), StudyReviewActivity.class);
+        intent.putExtra("observations", studyClicked.getObservations());
+        intent.putExtra("doctorName", studyClicked.getDoctorName());
+
+        startActivity(intent);
     }
 
 
