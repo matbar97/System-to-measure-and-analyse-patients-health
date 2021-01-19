@@ -62,8 +62,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 
         getListOfStudiesOfSinglePatient();
 
-        //getDoctorInfoAsADoctor();
-
         studyList = new ArrayList<>();
 
         adapter = new StudyRecyclerAdapterFromDocPointOfView(getApplicationContext(), studyList, this);
@@ -82,7 +80,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         actualPatientNameTextView = findViewById(R.id.actualPatientNameImageView);
         numberOfRecordsTextView = findViewById(R.id.numberOfRecordsTextView);
 
-        adapter.notifyDataSetChanged();
+//        adapter.notifyDataSetChanged();
 
         addStudyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,6 +174,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                         Study study = new Study();
                         study.setObservations(observations);
                         study.setDoctorName(wholeNameOfDoctorFromStudy);
+                        study.setStudyDateNTime(dateOfStudy);
 
                         studyList.add(study);
 
@@ -185,6 +184,8 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                     }
                 }
                 adapter.notifyDataSetChanged();
+                numberOfRecordsTextView.setText(String.valueOf(studyList.size()));
+
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -267,7 +268,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         Intent intent = new Intent(getApplicationContext(), StudyReviewActivity.class);
         intent.putExtra("observations", studyClicked.getObservations());
         intent.putExtra("doctorName", studyClicked.getDoctorName());
-        intent.putExtra("date", dateOfStudy);
+        intent.putExtra("date", studyClicked.getStudyDateNTime());
         startActivity(intent);
     }
 
