@@ -39,7 +39,7 @@ import java.util.Map;
 
 public class DoctorsMainMenuActivity extends AppCompatActivity {
     private Button findPatientButton, addPatientButton, logoutButton, accountButton;
-    private TextView professionTextView, doctorNameTextView, studiesNumberTextView;
+    private TextView professionTextView, doctorNameTextView, studiesNumberTextView, patientsNumberTextView;
     String token;
 
     @Override
@@ -54,9 +54,11 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
         professionTextView = findViewById(R.id.professionTextView);
         doctorNameTextView = findViewById(R.id.doctorNameTextView);
         studiesNumberTextView = findViewById(R.id.studiesNumberTextView);
+        patientsNumberTextView = findViewById(R.id.patientsNumberTextView);
 
         getLoginData();
         getCountStudiesForDoctor();
+        getCountPatientsForDoctor();
 
         addPatientButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,14 +151,46 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
         queue.add(req);
     }
 
+    private void getCountPatientsForDoctor() {
+        String URL = "http://192.168.99.1:8080/api/doctor/patient/count";
+
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("Response", response);
+                        patientsNumberTextView.setText(response);
+                        Toast.makeText(getApplicationContext(), "" + response, Toast.LENGTH_SHORT).show();
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("Error", "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(), "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                Intent intent = getIntent();
+                token = intent.getStringExtra("token");
+                headers.put("Authorization", "Bearer " + token);
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.start();
+        queue.add(req);
+    }
+
     private void goToPatientsList() {
         Intent intent = new Intent(getApplicationContext(), SearchForPatientActivity.class);
         intent.putExtra("token", token);
         System.out.println(token);
         startActivity(intent);
-//        } else { if(!token.isEmpty()) {
-//            return;
-//        }
     }
 
     private void goToPatientCreation() {
