@@ -38,7 +38,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
     private Button goBackButton_PatientData, addStudyButton;
     private TextView actualPatientNameTextView, numberOfRecordsTextView;
     String token, namePatient, surnamePatient, patientPesel, doctorsPesel, dateOfStudy,
-            doctorName, doctorSurname, studyObservations;
+            nameOfDoctorFromStudy, surnameOfDoctorFromStudy, studyObservations;
     private RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
@@ -92,6 +92,57 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 //        getNumberOfStudiesForPatient();
     }
 
+    private String getNameAndSurnameOfDoctoryFromStudy(String doctorsPesel) {
+
+        String URL = "http://192.168.99.1:8080/api/doctor/info/" + doctorsPesel;
+        System.out.println(doctorsPesel + " ten pesel nalezy do doktora ktory stworzyl badanie");
+        final String wholeNameOfDoctorFromStudy;
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
+                null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Response", response.toString());
+//                actualPatientNameTextView.setText(namePatient + " " + surnamePatient);
+//                Toast.makeText(getApplicationContext(), "Siema!", Toast.LENGTH_SHORT).show();
+                try {
+                    nameOfDoctorFromStudy = response.getString("name");
+                    surnameOfDoctorFromStudy = response.getString("surname");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("Error", "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                Intent intent = getIntent();
+                token = intent.getStringExtra("token");
+                System.out.println("PatientDataFromDocPointOfView token: " + token);
+                headers.put("Authorization", "Bearer " + token);
+//                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.start();
+        queue.add(req);
+
+        wholeNameOfDoctorFromStudy = nameOfDoctorFromStudy+ " " + surnameOfDoctorFromStudy;
+        return wholeNameOfDoctorFromStudy;
+    }
+
     private void getListOfStudiesOfSinglePatient() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
@@ -112,11 +163,12 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                         doctorsPesel = jsonObject.getString("doctorPesel");
                         dateOfStudy = jsonObject.getString("dateOfStudy");
 
+                        String wholeDoctorName = getNameAndSurnameOfDoctoryFromStudy(doctorsPesel);
+
                         Study study =  new Study();
                         study.setObservations(jsonObject.getString("observations"));
 //                        List<String> docNameSurname = getDoctorInfoAsADoctor(jsonObject.getString("doctorPesel"));
-                        study.setDoctorName(doctorsPesel + " " + dateOfStudy);
-//                        study.setDoctorName(docNameSurname.get(0) + " " + docNameSurname.get(1));
+                        study.setDoctorName(wholeDoctorName);
 
                         studyList.add(study);
 
