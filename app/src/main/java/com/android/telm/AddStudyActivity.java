@@ -33,7 +33,7 @@ public class AddStudyActivity extends AppCompatActivity {
     private Button backAddStudyButton, addAnnotationAddStudyButton, applyStudyAddStudyButton;
     private EditText studyDateAddStudyEditText, doctorNameAddStudyEditText, observationsMultiLineTextView;
     private TextView patientNameAddStudyTextView;
-    String name, surname, pesel, token;
+    String name, surname, pesel, token, observations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +60,11 @@ public class AddStudyActivity extends AppCompatActivity {
     }
 
     private void goToListOfStudiesForPatient() {
-        final String observations = observationsMultiLineTextView.getText().toString();
+        observations = observationsMultiLineTextView.getText().toString();
 
         String URL = "http://192.168.99.1:8080/api/doctor/study/add";
         final JSONObject jsonBody = new JSONObject();
 //        final String name_n_surname = patientNameAddStudyTextView.getText().toString();
-
 
         try {
             jsonBody.put("patientPesel", pesel);

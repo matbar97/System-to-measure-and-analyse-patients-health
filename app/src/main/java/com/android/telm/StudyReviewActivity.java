@@ -32,7 +32,7 @@ public class StudyReviewActivity extends AppCompatActivity {
     private Button backReviewStudyButton;
     private TextView patientNameReviewStudyTextView, studyDateReviewStudyTextView,
             doctorNameReviewStudyTextView, observationsReviewStudyTextView;
-    String token, name, surname, pesel, observations;
+    String token, doctorWholeName, name, surname, pesel, observations, dateOfStudy;
     int id;
 
     @Override
@@ -45,7 +45,21 @@ public class StudyReviewActivity extends AppCompatActivity {
         doctorNameReviewStudyTextView = findViewById(R.id.doctorNameReviewStudyTextView);
         observationsReviewStudyTextView = findViewById(R.id.observationsReviewStudyTextView);
 
-//        getStudyCurrentStudyData();
+        Intent intent = getIntent();
+        token = intent.getStringExtra("token"); doctorWholeName = intent.getStringExtra("doctorName");
+        observations = intent.getStringExtra("observations");
+        dateOfStudy = intent.getStringExtra("dateOfStudy");
+        observationsReviewStudyTextView.setText(observations);
+        doctorNameReviewStudyTextView.setText(doctorWholeName);
+        studyDateReviewStudyTextView.setText(dateOfStudy);
+
+        getStudyCurrentStudyData();
+    }
+
+    private void getStudyCurrentStudyData() {
+
+
+
     }
 
 //    private void getStudyCurrentStudyData() {

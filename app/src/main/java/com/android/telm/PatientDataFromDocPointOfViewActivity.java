@@ -60,11 +60,11 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         patientPesel = intent.getStringExtra("pesel");
         studyObservations = intent.getStringExtra("observations");
 
+        getListOfStudiesOfSinglePatient();
+
         //getDoctorInfoAsADoctor();
 
         studyList = new ArrayList<>();
-
-        getListOfStudiesOfSinglePatient();
 
         adapter = new StudyRecyclerAdapterFromDocPointOfView(getApplicationContext(), studyList, this);
 
@@ -82,6 +82,8 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         actualPatientNameTextView = findViewById(R.id.actualPatientNameImageView);
         numberOfRecordsTextView = findViewById(R.id.numberOfRecordsTextView);
 
+        adapter.notifyDataSetChanged();
+
         addStudyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,11 +94,16 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 //        getNumberOfStudiesForPatient();
     }
 
-    private String getNameAndSurnameOfDoctoryFromStudy(String doctorsPesel) {
+    private String getNameAndSurnameOfTheDoctorFromStudyByPeselString (String name, String surname) {
+        String wholeName;
+        wholeName = name + " " + surname;
+        return wholeName;
+    }
+
+    private void getNameAndSurnameOfDoctorFromStudy(String doctorsPesel) {
 
         String URL = "http://192.168.99.1:8080/api/doctor/info/" + doctorsPesel;
         System.out.println(doctorsPesel + " ten pesel nalezy do doktora ktory stworzyl badanie");
-//        final String wholeName;
 
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
                 null, new Response.Listener<JSONObject>() {
@@ -109,7 +116,9 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                 try {
                     nameOfDoctorFromStudy = response.getString("name");
                     surnameOfDoctorFromStudy = response.getString("surname");
-                    System.out.println(nameOfDoctorFromStudy + " " + surnameOfDoctorFromStudy + " <- czy działa");
+                    wholeNameOfDoctorFromStudy = getNameAndSurnameOfTheDoctorFromStudyByPeselString(nameOfDoctorFromStudy, surnameOfDoctorFromStudy);
+
+                    System.out.println(wholeNameOfDoctorFromStudy + " <- czy działa");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -138,10 +147,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.start();
         queue.add(req);
-        System.out.println(nameOfDoctorFromStudy + " " + surnameOfDoctorFromStudy + " <- czy działa");
-
-        return nameOfDoctorFromStudy+ " " + surnameOfDoctorFromStudy;
-
+//        System.out.println(wholeNameOfDoctorFromStudy + " <- czy działa");
     }
 
     private void getListOfStudiesOfSinglePatient() {
@@ -160,15 +166,16 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
             public void onResponse(JSONArray response) {
                 for (int i = 0; i < response.length(); i++) {
                     try {
+
                         JSONObject jsonObject = response.getJSONObject(i);
                         doctorsPesel = jsonObject.getString("doctorPesel");
                         dateOfStudy = jsonObject.getString("dateOfStudy");
 
-                        String wholeDoctorName = getNameAndSurnameOfDoctoryFromStudy(doctorsPesel);
+                        getNameAndSurnameOfDoctorFromStudy(doctorsPesel);
                         String observations = jsonObject.getString("observations");
                         Study study = new Study();
                         study.setObservations(observations);
-                        study.setDoctorName(wholeDoctorName);
+                        study.setDoctorName(wholeNameOfDoctorFromStudy);
 
                         studyList.add(study);
 
@@ -260,7 +267,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         Intent intent = new Intent(getApplicationContext(), StudyReviewActivity.class);
         intent.putExtra("observations", studyClicked.getObservations());
         intent.putExtra("doctorName", studyClicked.getDoctorName());
-
+        intent.putExtra("date", dateOfStudy);
         startActivity(intent);
     }
 
