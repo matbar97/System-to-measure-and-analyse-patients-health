@@ -168,8 +168,8 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                         JSONObject jsonObject = response.getJSONObject(i);
                         doctorsPesel = jsonObject.getString("doctorPesel");
                         dateOfStudy = jsonObject.getString("dateOfStudy");
-
                         getNameAndSurnameOfDoctorFromStudy(doctorsPesel);
+
                         String observations = jsonObject.getString("observations");
                         Study study = new Study();
                         study.setObservations(observations);
@@ -269,6 +269,10 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         intent.putExtra("observations", studyClicked.getObservations());
         intent.putExtra("doctorName", studyClicked.getDoctorName());
         intent.putExtra("date", studyClicked.getStudyDateNTime());
+        intent.putExtra("name", namePatient);
+        intent.putExtra("surname", surnamePatient);
+        intent.putExtra("peselPatient", patientPesel);
+
         startActivity(intent);
     }
 

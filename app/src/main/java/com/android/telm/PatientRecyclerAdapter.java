@@ -126,7 +126,6 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
             pPesel = itemView.findViewById(R.id.peselTxt);
 
             this.onPatientListener = onPatientListener;
-
             itemView.setOnClickListener(this);
         }
 
