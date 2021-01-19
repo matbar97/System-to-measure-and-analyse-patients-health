@@ -20,14 +20,14 @@ public class StudyRecyclerAdapterFromDocPointOfView extends RecyclerView.Adapter
     private List<Study> studyList;
 
     //declare interface
-    private StudyRecyclerAdapterFromDocPointOfView.OnPatientListener mOnStudyListener;
+    private StudyRecyclerAdapterFromDocPointOfView.OnStudyListener mOnStudyListener;
 
 
 
-    public StudyRecyclerAdapterFromDocPointOfView(Context context, List<Study> studyList, StudyRecyclerAdapterFromDocPointOfView.OnPatientListener mOnStudyListener) {
+    public StudyRecyclerAdapterFromDocPointOfView(Context context, List<Study> studyList, StudyRecyclerAdapterFromDocPointOfView.OnStudyListener mOnStudyListener) {
         this.context = context;
         this.studyList = studyList;
-//        this.mOnPatientListener = mOnPatientListener;
+        this.mOnStudyListener = mOnStudyListener;
     }
 
     @Override
@@ -50,16 +50,16 @@ public class StudyRecyclerAdapterFromDocPointOfView extends RecyclerView.Adapter
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        StudyRecyclerAdapterFromDocPointOfView.OnPatientListener onStudyListener;
+        StudyRecyclerAdapterFromDocPointOfView.OnStudyListener onStudyListener;
         public TextView pDoctorName;
         public TextView pObservations;
 
-        public ViewHolder(View itemView, StudyRecyclerAdapterFromDocPointOfView.OnPatientListener onPatientListener) {
+        public ViewHolder(View itemView, StudyRecyclerAdapterFromDocPointOfView.OnStudyListener onStudyListener) {
             super(itemView);
 
             pDoctorName = itemView.findViewById(R.id.doctors_surname_txt);
             pObservations = itemView.findViewById(R.id.observations_txt);
-            this.onStudyListener = onPatientListener;
+            this.onStudyListener = onStudyListener;
             itemView.setOnClickListener(this);
         }
 
@@ -70,7 +70,7 @@ public class StudyRecyclerAdapterFromDocPointOfView extends RecyclerView.Adapter
     }
 
     //make interface like this
-    public interface OnPatientListener {
+    public interface OnStudyListener {
         void onStudyClick(int position);
     }
 

@@ -2,7 +2,19 @@ package com.android.telm;
 
 public class Study {
 
-    private String observations, patientPesel, doctorName;
+    private String observations;
+    private String patientPesel;
+    private String doctorName;
+
+    public String getStudyDateNTime() {
+        return studyDateNTime;
+    }
+
+    public void setStudyDateNTime(String studyDateNTime) {
+        this.studyDateNTime = studyDateNTime;
+    }
+
+    private String studyDateNTime;
 
 
     public Study(String observations, String patientPesel) {
