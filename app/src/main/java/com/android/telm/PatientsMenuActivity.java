@@ -41,7 +41,7 @@ public class PatientsMenuActivity extends AppCompatActivity {
 
     private void getPatientData() {
 
-        String URL = "http://192.168.1.11:8080/me";
+        String URL = "http://192.168.8.108:8080/me";
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
                 null, new Response.Listener<JSONObject>() {
 

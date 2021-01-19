@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendPostData() throws JSONException {
-        String URL = "http://192.168.1.11:8080/auth/signin";
+        String URL = "http://192.168.8.108:8080/auth/signin";
         final JSONObject jsonBody = new JSONObject();
         final String username = editTextLogin.getText().toString();
         final String pwd = editTextPasswordLogin.getText().toString();

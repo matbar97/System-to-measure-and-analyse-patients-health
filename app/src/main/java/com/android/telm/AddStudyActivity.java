@@ -62,7 +62,7 @@ public class AddStudyActivity extends AppCompatActivity {
     private void goToListOfStudiesForPatient() {
         observations = observationsMultiLineTextView.getText().toString();
 
-        String URL = "http://192.168.99.1:8080/api/doctor/study/add";
+        String URL = "http://192.168.8.108:8080/api/doctor/study/add";
         final JSONObject jsonBody = new JSONObject();
 //        final String name_n_surname = patientNameAddStudyTextView.getText().toString();
 

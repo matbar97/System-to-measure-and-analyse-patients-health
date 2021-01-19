@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -65,7 +66,68 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
 
+        searchForPatientEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ProgressDialog progressDialog = new ProgressDialog(v.getContext());
+                progressDialog.setMessage("Loading...");
+                progressDialog.show();
+
+                String URL = "http://192.168.8.108:8080/api/doctor/listpatients/" + searchForPatientEditText.getText();
+                RequestQueue queue = Volley.newRequestQueue(v.getContext());
+                patientList.clear();
+                JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                JSONObject jsonObject = response.getJSONObject(i);
+
+                                Patient patient = new Patient();
+                                patient.setName(jsonObject.getString("name"));
+                                patient.setSurname(jsonObject.getString("surname"));
+                                patient.setPesel(jsonObject.getString("pesel"));
+
+                                patientList.add(patient);
+                                System.out.println(patientList.size());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                progressDialog.dismiss();
+                            }
+                        }
+                        System.out.println(patientList.size());
+
+                        adapter.notifyDataSetChanged();
+                        progressDialog.dismiss();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley Error: ", String.valueOf(error));
+                    }
+
+                }) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        Intent intent = getIntent();
+                        token = intent.getStringExtra("token");
+                        System.out.println("SearchForPatientToken: " + token);
+                        headers.put("Authorization", "Bearer " + token);
+//                headers.put("Content-Type", "application/json");
+                        return headers;
+                    }
+
+                };
+                queue.add(jsonArrayRequest);
+                System.out.println(patientList.size());
+            }
+
+
+        });
+
     }
+
 
     @Override
     public void onPatientClick(int position) {
@@ -86,10 +148,10 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        String URL = "http://192.168.99.1:8080/api/doctor/listpatients";
+        String URL = "http://192.168.8.108:8080/api/doctor/listpatients";
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET ,URL, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 for (int i = 0; i < response.length(); i++) {
@@ -119,13 +181,13 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
                 Log.i("Volley Error: ", String.valueOf(error));
             }
 
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 Intent intent = getIntent();
                 token = intent.getStringExtra("token");
-                System.out.println("SearchForPatientToken: "+token);
+                System.out.println("SearchForPatientToken: " + token);
                 headers.put("Authorization", "Bearer " + token);
 //                headers.put("Content-Type", "application/json");
                 return headers;

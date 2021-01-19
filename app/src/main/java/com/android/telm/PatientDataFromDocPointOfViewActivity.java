@@ -100,7 +100,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 
     private void getNameAndSurnameOfDoctorFromStudy(String doctorsPesel) {
 
-        String URL = "http://192.168.99.1:8080/api/doctor/info/" + doctorsPesel;
+        String URL = "http://192.168.8.108:8080/api/doctor/info/" + doctorsPesel;
         System.out.println(doctorsPesel + " ten pesel nalezy do doktora ktory stworzyl badanie");
 
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
@@ -157,7 +157,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         System.out.println("Token: " + token);
         System.out.println("Obserwacje: " + studyObservations);
 
-        String URL = "http://192.168.99.1:8080/api/doctor/patient/" + peselNew + "/liststudies";
+        String URL = "http://192.168.8.108:8080/api/doctor/patient/" + peselNew + "/liststudies";
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
             @Override
@@ -216,7 +216,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 
         String peselNew = patientPesel;
 
-        String URL = "http://192.168.99.1:8080/api/doctor/patient/" + peselNew;
+        String URL = "http://192.168.8.108:8080/api/doctor/patient/" + peselNew;
         System.out.println(URL);
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.DEPRECATED_GET_OR_POST, URL,
                 null, new Response.Listener<JSONObject>() {

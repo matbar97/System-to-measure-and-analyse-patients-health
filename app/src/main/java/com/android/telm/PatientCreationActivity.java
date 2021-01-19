@@ -58,7 +58,7 @@ public class PatientCreationActivity extends AppCompatActivity {
 
     private void postDataOfNewPatients() throws JSONException {
 
-        String URL = "http://192.168.1.11:8080/api/doctor/patient/add";
+        String URL = "http://192.168.8.108:8080/api/doctor/patient/add";
         final JSONObject jsonBody = new JSONObject();
         final String name = nameEditText.getText().toString();
         final String surname = surnameEditText.getText().toString();
