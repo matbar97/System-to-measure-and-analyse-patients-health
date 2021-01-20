@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PatientsMenuActivity"></activity>
+        <activity android:name=".PatientCardDataFromPatientPointOfView"></activity>
+        <activity android:name=".PatientsMenuActivity" />
         <activity android:name=".SearchForPatientActivity" />
         <activity android:name=".StudyReviewActivity" />
         <activity android:name=".AddStudyActivity" />

@@ -100,10 +100,11 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         return wholeName;
     }
 
-    private void getNameAndSurnameOfDoctorFromStudy(String doctorsPesel) {
+    private String getNameAndSurnameOfDoctorFromStudy(String doctorsPesel) {
 
         String URL = "http://"+ip+":8080/api/doctor/info/" + doctorsPesel;
         System.out.println(doctorsPesel + " ten pesel nalezy do doktora ktory stworzyl badanie");
+        final String[] wholeName = new String[1];
 
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
                 null, new Response.Listener<JSONObject>() {
@@ -117,7 +118,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                     nameOfDoctorFromStudy = response.getString("name");
                     surnameOfDoctorFromStudy = response.getString("surname");
                     wholeNameOfDoctorFromStudy = getNameAndSurnameOfTheDoctorFromStudyByPeselString(nameOfDoctorFromStudy, surnameOfDoctorFromStudy);
-
+                    wholeName[0] = wholeNameOfDoctorFromStudy;
                     System.out.println(wholeNameOfDoctorFromStudy + " <- czy działa");
 
                 } catch (JSONException e) {
@@ -148,6 +149,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         queue.start();
         queue.add(req);
 //        System.out.println(wholeNameOfDoctorFromStudy + " <- czy działa");
+        return wholeName[0];
     }
 
     private void getListOfStudiesOfSinglePatient() {
@@ -170,12 +172,12 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                         JSONObject jsonObject = response.getJSONObject(i);
                         doctorsPesel = jsonObject.getString("doctorPesel");
                         dateOfStudy = jsonObject.getString("dateOfStudy");
-                        getNameAndSurnameOfDoctorFromStudy(doctorsPesel);
+                        System.out.println((doctorsPesel) + " to nas interesuje");
 
                         String observations = jsonObject.getString("observations");
                         Study study = new Study();
                         study.setObservations(observations);
-                        study.setDoctorName(wholeNameOfDoctorFromStudy);
+                        study.setDoctorName(getNameAndSurnameOfDoctorFromStudy(doctorsPesel));
                         study.setStudyDateNTime(dateOfStudy);
 
                         studyList.add(study);
@@ -185,9 +187,9 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                         progressDialog.dismiss();
                     }
                 }
-                adapter.notifyDataSetChanged();
                 numberOfRecordsTextView.setText(String.valueOf(studyList.size()));
 
+                adapter.notifyDataSetChanged();
                 progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
@@ -205,7 +207,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 //            token = intent.getStringExtra("token");
                 System.out.println("SearchForPatientToken: " + token);
                 headers.put("Authorization", "Bearer " + token);
-//                headers.put("Content-Type", "application/json");
                 return headers;
             }
         };
