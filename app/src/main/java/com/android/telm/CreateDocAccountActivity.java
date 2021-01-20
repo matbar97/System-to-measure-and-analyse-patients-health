@@ -27,6 +27,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.android.telm.MainActivity.ip;
+
 public class CreateDocAccountActivity extends AppCompatActivity {
     private Button applyButton, goBackButton;
     private EditText editTextName, editTextPESEL,
@@ -71,7 +73,7 @@ public class CreateDocAccountActivity extends AppCompatActivity {
 
     public void registerPatientPostData() throws JSONException {
 
-        String URL = "http://192.168.8.108:8080/auth/register/add";
+        String URL = "http://"+ip+":8080/auth/register/add";
         final JSONObject jsonBody = new JSONObject();
         final String name = editTextName.getText().toString();
         final String surname = editTextSurname.getText().toString();
@@ -153,7 +155,7 @@ public class CreateDocAccountActivity extends AppCompatActivity {
 
     public void sendLoginPostData() throws JSONException {
 
-        String URL = "http://192.168.8.108:8080/auth/signin";
+        String URL = "http://"+ip+":8080/auth/signin";
         final JSONObject jsonBody = new JSONObject();
         final String username = editTextName.getText().toString();
         final String pwd = editTextPassword.getText().toString();

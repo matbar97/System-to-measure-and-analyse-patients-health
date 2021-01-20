@@ -28,7 +28,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.android.telm.MainActivity.ip;
+
 public class AddStudyActivity extends AppCompatActivity {
+
+
 
     private Button backAddStudyButton, addAnnotationAddStudyButton, applyStudyAddStudyButton;
     private EditText studyDateAddStudyEditText, doctorNameAddStudyEditText, observationsMultiLineTextView;
@@ -62,10 +66,9 @@ public class AddStudyActivity extends AppCompatActivity {
     private void goToListOfStudiesForPatient() {
         observations = observationsMultiLineTextView.getText().toString();
 
-        String URL = "http://192.168.8.108:8080/api/doctor/study/add";
+        String URL = "http://"+ip+":8080/api/doctor/study/add";
         final JSONObject jsonBody = new JSONObject();
 //        final String name_n_surname = patientNameAddStudyTextView.getText().toString();
-
         try {
             jsonBody.put("patientPesel", pesel);
             jsonBody.put("observations", observations);

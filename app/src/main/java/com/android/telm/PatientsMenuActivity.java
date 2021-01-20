@@ -23,6 +23,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.android.telm.MainActivity.ip;
+
 public class PatientsMenuActivity extends AppCompatActivity {
 
     private TextView patientNameTextView, patientStudiesNumberTextView;
@@ -41,7 +43,7 @@ public class PatientsMenuActivity extends AppCompatActivity {
 
     private void getPatientData() {
 
-        String URL = "http://192.168.8.108:8080/me";
+        String URL = "http://"+ip+":8080/me";
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
                 null, new Response.Listener<JSONObject>() {
 

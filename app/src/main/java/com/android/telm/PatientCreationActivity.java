@@ -27,6 +27,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.android.telm.MainActivity.ip;
+
 public class PatientCreationActivity extends AppCompatActivity {
 
     private Button addPatientButton, goToPreviousActivityButton;
@@ -58,7 +60,7 @@ public class PatientCreationActivity extends AppCompatActivity {
 
     private void postDataOfNewPatients() throws JSONException {
 
-        String URL = "http://192.168.8.108:8080/api/doctor/patient/add";
+        String URL = "http://"+ip+":8080/api/doctor/patient/add";
         final JSONObject jsonBody = new JSONObject();
         final String name = nameEditText.getText().toString();
         final String surname = surnameEditText.getText().toString();

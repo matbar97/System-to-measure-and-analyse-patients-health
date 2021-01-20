@@ -33,6 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.android.telm.MainActivity.ip;
+
 public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity implements StudyRecyclerAdapterFromDocPointOfView.OnStudyListener {
 
     private Button goBackButton_PatientData, addStudyButton;
@@ -100,7 +102,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 
     private void getNameAndSurnameOfDoctorFromStudy(String doctorsPesel) {
 
-        String URL = "http://192.168.8.108:8080/api/doctor/info/" + doctorsPesel;
+        String URL = "http://"+ip+":8080/api/doctor/info/" + doctorsPesel;
         System.out.println(doctorsPesel + " ten pesel nalezy do doktora ktory stworzyl badanie");
 
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
@@ -157,7 +159,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         System.out.println("Token: " + token);
         System.out.println("Obserwacje: " + studyObservations);
 
-        String URL = "http://192.168.8.108:8080/api/doctor/patient/" + peselNew + "/liststudies";
+        String URL = "http://"+ip+":8080/api/doctor/patient/" + peselNew + "/liststudies";
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
             @Override
@@ -216,7 +218,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 
         String peselNew = patientPesel;
 
-        String URL = "http://192.168.8.108:8080/api/doctor/patient/" + peselNew;
+        String URL = "http://"+ip+":8080/api/doctor/patient/" + peselNew;
         System.out.println(URL);
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.DEPRECATED_GET_OR_POST, URL,
                 null, new Response.Listener<JSONObject>() {
@@ -275,90 +277,5 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 
         startActivity(intent);
     }
-
-
-//    private List<String> getDoctorInfoAsADoctor(String doctorPesel)
-//    {
-//        String URL = "http://192.168.99.1:8080/api/doctor/info/" + doctorPesel;
-//        List<String> nameSurnameListDoctor;
-//
-//        System.out.println(URL);
-//        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
-//                null, new Response.Listener<JSONObject>() {
-//
-//            @Override
-//            public void onResponse(JSONObject response) {
-////                String doctorName = null, doctorSurname;
-//                Log.d("Response", response.toString());
-////                actualPatientNameTextView.setText(name + " " + surname);
-////                response.getString("name", doctorName);
-////                response.getString("surname", doctorSurname);
-//
-//                Toast.makeText(getApplicationContext(), "Siema!", Toast.LENGTH_SHORT).show();
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                VolleyLog.d("Error", "Error: " + error.getMessage());
-//                Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_LONG).show();
-//            }
-//        }) {
-//            @Override
-//            public Map<String, String> getHeaders() {
-//                HashMap<String, String> headers = new HashMap<String, String>();
-//                Intent intent = getIntent();
-//                token = intent.getStringExtra("token");
-//                System.out.println("PatientDataFromDocPointOfView token: " + token);
-//                headers.put("Authorization", "Bearer " + token);
-////                headers.put("Content-Type", "application/json");
-//                return headers;
-//            }
-//
-//        };
-//
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.start();
-//        queue.add(req);
-//    }
-
-
-
-//    private void getNumberOfStudiesForPatient() {
-//        String peselNew = pesel;
-//
-//        String URL = "http://192.168.99.1:8080/api/doctor/patient/" + peselNew;
-//        System.out.println(URL);
-//        JsonObjectRequest req = new JsonObjectRequest(Request.Method.DEPRECATED_GET_OR_POST, URL,
-//                null, new Response.Listener<JSONObject>() {
-//
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                Log.d("Response", response.toString());
-//                actualPatientNameTextView.setText(name + " " + surname);
-//                Toast.makeText(getApplicationContext(), "Siema!", Toast.LENGTH_SHORT).show();
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                VolleyLog.d("Error", "Error: " + error.getMessage());
-//                Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_LONG).show();
-//            }
-//        }) {
-//            @Override
-//            public Map<String, String> getHeaders() {
-//                HashMap<String, String> headers = new HashMap<String, String>();
-//                Intent intent = getIntent();
-//                token = intent.getStringExtra("token");
-//                System.out.println("PatientDataFromDocPointOfView token: " + token);
-//                headers.put("Authorization", "Bearer " + token);
-////                headers.put("Content-Type", "application/json");
-//                return headers;
-//            }
-//        };
-//
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.start();
-//        queue.add(req);
-//    }
 
 }

@@ -31,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.android.telm.MainActivity.ip;
+
 public class SearchForPatientActivity extends AppCompatActivity implements PatientRecyclerAdapter.OnPatientListener {
 
     private Button arrowBackSearchForPatientButton;
@@ -73,7 +75,7 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
                 progressDialog.setMessage("Loading...");
                 progressDialog.show();
 
-                String URL = "http://192.168.8.108:8080/api/doctor/listpatients/" + searchForPatientEditText.getText();
+                String URL = "http://"+ip+":8080/api/doctor/listpatients/" + searchForPatientEditText.getText();
                 RequestQueue queue = Volley.newRequestQueue(v.getContext());
                 patientList.clear();
                 JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
@@ -148,7 +150,7 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        String URL = "http://192.168.8.108:8080/api/doctor/listpatients";
+        String URL = "http://"+ip+":8080/api/doctor/listpatients";
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
@@ -189,7 +191,6 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
                 token = intent.getStringExtra("token");
                 System.out.println("SearchForPatientToken: " + token);
                 headers.put("Authorization", "Bearer " + token);
-//                headers.put("Content-Type", "application/json");
                 return headers;
             }
 

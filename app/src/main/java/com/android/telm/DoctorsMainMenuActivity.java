@@ -37,6 +37,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.android.telm.MainActivity.ip;
+
 public class DoctorsMainMenuActivity extends AppCompatActivity {
     private Button findPatientButton, addPatientButton, logoutButton, accountButton;
     private TextView professionTextView, doctorNameTextView, studiesNumberTextView, patientsNumberTextView;
@@ -76,7 +78,7 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
 
     private void getLoginData() {
 
-        String URL = "http://192.168.8.108:8080/me";
+        String URL = "http://"+ip+":8080/me";
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
                 null, new Response.Listener<JSONObject>() {
 
@@ -116,7 +118,7 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
     }
 
     private void getCountStudiesForDoctor() {
-        String URL = "http://192.168.8.108:8080/api/doctor/countstudies";
+        String URL = "http://"+ip+":8080/api/doctor/countstudies";
 
         StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
@@ -151,7 +153,7 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
     }
 
     private void getCountPatientsForDoctor() {
-        String URL = "http://192.168.8.108:8080/api/doctor/patient/count";
+        String URL = "http://"+ip+":8080/api/doctor/patient/count";
 
         StringRequest req = new StringRequest(Request.Method.GET, URL,
                 new Response.Listener<String>() {
