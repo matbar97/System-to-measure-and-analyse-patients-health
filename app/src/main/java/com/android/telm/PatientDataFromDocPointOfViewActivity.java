@@ -94,11 +94,27 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 //        getNumberOfStudiesForPatient();
     }
 
+    @Override
+    public void onStudyClick(int position) {
+        Study studyClicked = studyList.get(position);
+        Intent intent = new Intent(getApplicationContext(), StudyReviewActivity.class);
+        intent.putExtra("observations", studyClicked.getObservations());
+        intent.putExtra("doctorName", studyClicked.getDoctorName());
+        intent.putExtra("date", studyClicked.getStudyDateNTime());
+        intent.putExtra("name", namePatient);
+        intent.putExtra("surname", surnamePatient);
+        intent.putExtra("peselPatient", patientPesel);
+
+        startActivity(intent);
+    }
+
     private String getNameAndSurnameOfTheDoctorFromStudyByPeselString (String name, String surname) {
         String wholeName;
         wholeName = name + " " + surname;
         return wholeName;
     }
+
+
 
     private String getNameAndSurnameOfDoctorFromStudy(String doctorsPesel) {
 
@@ -265,18 +281,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         startActivity(intent);
     }
 
-    @Override
-    public void onStudyClick(int position) {
-        Study studyClicked = studyList.get(position);
-        Intent intent = new Intent(getApplicationContext(), StudyReviewActivity.class);
-        intent.putExtra("observations", studyClicked.getObservations());
-        intent.putExtra("doctorName", studyClicked.getDoctorName());
-        intent.putExtra("date", studyClicked.getStudyDateNTime());
-        intent.putExtra("name", namePatient);
-        intent.putExtra("surname", surnamePatient);
-        intent.putExtra("peselPatient", patientPesel);
 
-        startActivity(intent);
-    }
 
 }

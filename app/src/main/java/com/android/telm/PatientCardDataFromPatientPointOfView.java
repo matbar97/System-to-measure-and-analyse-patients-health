@@ -69,7 +69,13 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
 
+    @Override
+    public void onStudyClick(int position) {
+
+        Intent i = new Intent(this, StudyReviewActivity.class);
+        startActivity(i);
     }
 
     private void getListOfStudiesOfSinglePatientPatientView() {
@@ -135,11 +141,6 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonArrayRequest);
-
-    }
-
-    @Override
-    public void onStudyClick(int position) {
 
     }
 }
