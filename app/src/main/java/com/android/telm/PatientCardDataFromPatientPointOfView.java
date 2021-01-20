@@ -73,9 +73,17 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
 
     @Override
     public void onStudyClick(int position) {
+        Study studyClicked = studyList.get(position);
+        Intent intent = new Intent(getApplicationContext(), StudyReviewActivity.class);
+        intent.putExtra("observations", studyClicked.getObservations());
+        intent.putExtra("doctorName", studyClicked.getDoctorName());
+        intent.putExtra("date", studyClicked.getStudyDateNTime());
+        intent.putExtra("name", myNamePatient);
+        intent.putExtra("surname", mySurnamePatient);
+        intent.putExtra("peselPatient", myPeselPatient);
 
-        Intent i = new Intent(this, StudyReviewActivity.class);
-        startActivity(i);
+        startActivity(intent);
+
     }
 
     private void getListOfStudiesOfSinglePatientPatientView() {
@@ -88,7 +96,6 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
         System.out.println("Obserwacje: " + studyObservations);
 
         String URL = "http://" + ip + ":8080/api/patient/study/list";
-//        http://192.168.99.1:8080/api/patient/study/list
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -100,9 +107,10 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
                         dateOfStudy = jsonObject.getString("dateOfStudy");
                         System.out.println((doctorsPesel) + " to nas interesuje");
 
-                        String observations = jsonObject.getString("observations");
+                        String studyObservationsJSON = jsonObject.getString("observations");
                         Study study = new Study();
-                        study.setObservations(observations);
+                        studyObservations = studyObservationsJSON;
+                        study.setObservations(studyObservations);
 //                        study.setDoctorName(getNameAndSurnameOfDoctorFromStudy(doctorsPesel));
                         study.setDoctorName("Mostowiak");
 
