@@ -49,7 +49,7 @@ public class StudyReviewActivity extends AppCompatActivity {
         Intent intent = getIntent();
         token = intent.getStringExtra("token"); doctorWholeName = intent.getStringExtra("doctorName");
         observations = intent.getStringExtra("observations");
-        dateOfStudy = intent.getStringExtra("dateOfStudy");
+        dateOfStudy = intent.getStringExtra("date");
         namePatient = intent.getStringExtra("name");
         surnamePatient = intent.getStringExtra("surname");
         peselPatient = intent.getStringExtra("peselPatient");
