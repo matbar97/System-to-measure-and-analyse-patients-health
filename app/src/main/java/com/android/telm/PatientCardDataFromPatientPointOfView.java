@@ -9,6 +9,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -32,6 +34,7 @@ import static com.android.telm.MainActivity.ip;
 public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  implements PatientCardRecyclerAdapter.OnStudyListener{
 
     private TextView patientNameTextViewPatientView, numberOfRecordsTextViewPatientView;
+    private Button goBackToPatientMainMenuButton;
     String myNamePatient, mySurnamePatient, token, myPeselPatient, studyObservations, doctorsPesel, dateOfStudy;
     private RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
@@ -45,6 +48,7 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
         setContentView(R.layout.activity_patient_card_data_from_patient_point_of_view);
         patientNameTextViewPatientView=findViewById(R.id.actualPatientNameTextViewPatientView);
         numberOfRecordsTextViewPatientView=findViewById(R.id.numberOfRecordsTextViewPatientView);
+        goBackToPatientMainMenuButton = findViewById(R.id.goBackButton_PatientData_PatientView);
 
         Intent intent = getIntent();
         myNamePatient = intent.getStringExtra("myNamePatient");
@@ -69,6 +73,17 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        goBackToPatientMainMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goBackToPatientsMainMenu();
+            }
+        });
+    }
+
+    private void goBackToPatientsMainMenu() {
+        onBackPressed();
     }
 
     @Override

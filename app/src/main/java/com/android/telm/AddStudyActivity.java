@@ -55,12 +55,30 @@ public class AddStudyActivity extends AppCompatActivity {
         name = intent.getStringExtra("name"); surname = intent.getStringExtra("surname");
         pesel = intent.getStringExtra("pesel"); token = intent.getStringExtra("token");
         patientNameAddStudyTextView.setText(name + " " + surname);
+
         applyStudyAddStudyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToListOfStudiesForPatient();
             }
         });
+
+        backAddStudyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goBackToCurrentPatientData();
+            }
+        });
+    }
+
+    private void goBackToCurrentPatientData() {
+//        Intent intent = new Intent(getApplicationContext(), PatientDataFromDocPointOfViewActivity.class);
+//        intent.putExtra("token", token);
+//        intent.putExtra("name", name);
+//        intent.putExtra("surname", surname);
+//        intent.putExtra("pesel", pesel);
+//        startActivity(intent);
+        onBackPressed();
     }
 
     private void goToListOfStudiesForPatient() {

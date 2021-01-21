@@ -58,6 +58,9 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
         studiesNumberTextView = findViewById(R.id.studiesNumberTextView);
         patientsNumberTextView = findViewById(R.id.patientsNumberTextView);
 
+        Intent intent = getIntent();
+        token = intent.getStringExtra("token");
+
         getLoginData();
         getCountStudiesForDoctor();
         getCountPatientsForDoctor();
@@ -74,6 +77,25 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
                 goToPatientsList();
             }
         });
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logoutCurrentDoctor();
+            }
+        });
+    }
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "Aby wyjść z aplikacji naciśnij przycisk Wyloguj", Toast.LENGTH_SHORT).show();
+        return;
+    }
+    private void logoutCurrentDoctor() {
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        Toast.makeText(this, "Zostałeś wylogowany.", Toast.LENGTH_SHORT).show();
+        token = null;
+        finish();
     }
 
     private void getLoginData() {

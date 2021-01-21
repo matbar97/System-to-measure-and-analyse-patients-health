@@ -56,6 +56,20 @@ public class PatientCreationActivity extends AppCompatActivity {
                 }
             }
         });
+
+        goToPreviousActivityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goBackToDoctorsMainMenu();
+            }
+        });
+    }
+
+    private void goBackToDoctorsMainMenu() {
+//        Intent intent = new Intent (getApplicationContext(), DoctorsMainMenuActivity.class);
+//        intent.putExtra("token", token);
+//        startActivity(intent);
+        onBackPressed();
     }
 
     private void postDataOfNewPatients() throws JSONException {

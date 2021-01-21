@@ -77,7 +77,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
 
-        goBackButton_PatientData = findViewById(R.id.goBackButton);
+        goBackButton_PatientData = findViewById(R.id.goBackButton_PatientData);
         addStudyButton = findViewById(R.id.addStudyButton);
         actualPatientNameTextView = findViewById(R.id.actualPatientNameImageView);
         numberOfRecordsTextView = findViewById(R.id.numberOfRecordsTextView);
@@ -90,9 +90,24 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                 goToStudyCreation();
             }
         });
+        goBackButton_PatientData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goBackToPatientListInDoctorAccount();
+            }
+        });
         getPatientCardCreatedByDoctor();
 //        getNumberOfStudiesForPatient();
     }
+
+    private void goBackToPatientListInDoctorAccount() {
+        Intent intent = new Intent (getApplicationContext(), SearchForPatientActivity.class);
+        intent.putExtra("token", token);
+        startActivity(intent);
+    }
+
+
+
 
     @Override
     public void onStudyClick(int position) {

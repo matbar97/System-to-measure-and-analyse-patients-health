@@ -128,6 +128,15 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
 
         });
 
+        arrowBackSearchForPatientButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), DoctorsMainMenuActivity.class);
+                intent.putExtra("token", token);
+                startActivity(intent);
+            }
+        });
+
     }
 
 

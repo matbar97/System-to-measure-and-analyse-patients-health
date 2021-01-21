@@ -2,10 +2,8 @@ package com.android.telm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -60,22 +58,19 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-//                goToDoctorsMainMenu();
             }
         });
 
     }
 
-//    private void goToDoctorsMainMenu() {
-//        Intent intent = new Intent(this, DoctorsMainMenuActivity.class);
-//        intent.putExtra("username", editTextLogin.getText().toString());
-//        intent.putExtra("password", editTextPassword.getText().toString());
-//        startActivity(intent);
+//    @Override
+//    public void onBackPressed() {
+//        Toast.makeText(this, "Nie możesz wrócić do aplikacji.", Toast.LENGTH_SHORT).show();
+//        return;
 //    }
 
     private void goToAccountCreation() {
-        Intent intent = new Intent(this, CreateDocAccountActivity.class);
+        Intent intent = new Intent(this, CreatePatientAccountActivity.class);
         startActivity(intent);
     }
 

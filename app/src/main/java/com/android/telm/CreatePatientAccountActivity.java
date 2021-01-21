@@ -29,7 +29,7 @@ import java.util.Map;
 
 import static com.android.telm.MainActivity.ip;
 
-public class CreateDocAccountActivity extends AppCompatActivity {
+public class CreatePatientAccountActivity extends AppCompatActivity {
     private Button applyButton, goBackButton;
     private EditText editTextName, editTextPESEL,
             editTextEmail, editTextPassword, editTextSurname;
@@ -61,15 +61,11 @@ public class CreateDocAccountActivity extends AppCompatActivity {
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goBackToMainScreen();
+                onBackPressed();
             }
         });
     }
 
-    private void goBackToMainScreen() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
 
     public void registerPatientPostData() throws JSONException {
 
@@ -95,10 +91,6 @@ public class CreateDocAccountActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.i("VOLLEY", response.toString());
-                        //                            String token = response.getString("token");
-//                        Intent intent = new Intent(getApplicationContext(), PatientsMenuActivity.class);
-////                            intent.putExtra("token", token);
-//                        startActivity(intent);
                         Toast.makeText(getApplicationContext(), "Zarejestrowano " + username, Toast.LENGTH_SHORT).show();
                     }
                 },

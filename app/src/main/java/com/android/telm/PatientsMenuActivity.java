@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -30,7 +31,7 @@ import static com.android.telm.MainActivity.ip;
 public class PatientsMenuActivity extends AppCompatActivity {
 
     private TextView patientNameTextView, patientStudiesNumberTextView;
-    private Button myStudiesPatientButton;
+    private Button myStudiesPatientButton, logoutButtonPatient;
     String myNamePatient, mySurnamePatient, token, myPeselPatient;
 
     @Override
@@ -41,41 +42,59 @@ public class PatientsMenuActivity extends AppCompatActivity {
         patientNameTextView = findViewById(R.id.patientNameTextView);
         patientStudiesNumberTextView = findViewById(R.id.patientStudiesNumberTextView);
         myStudiesPatientButton = findViewById(R.id.myStudiesButton);
+        logoutButtonPatient = findViewById(R.id.logoutPatientButton);
 
         getPatientData();
-//        getCountStudiesForPatient();
-
+        getCountStudiesForPatient();
 
         myStudiesPatientButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), PatientCardDataFromPatientPointOfView.class);
-                intent.putExtra("myNamePatient", myNamePatient);
-                intent.putExtra("mySurnamePatient", mySurnamePatient);
-                intent.putExtra("token", token);
-                intent.putExtra("myPeselPatient", myPeselPatient);
-                startActivity(intent);
+                goToMyStudiesActivityPatient();
             }
         });
+        logoutButtonPatient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logoutCurrentPatient();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "Aby wyjść z aplikacji naciśnij przycisk Wyloguj", Toast.LENGTH_SHORT).show();
+        return;
+    }
+
+    private void logoutCurrentPatient() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        Toast.makeText(this, "Zostałeś wylogowany.", Toast.LENGTH_SHORT).show();
+        token = null;
+        finish();
 
     }
 
+    private void goToMyStudiesActivityPatient() {
+        Intent intent = new Intent(getApplicationContext(), PatientCardDataFromPatientPointOfView.class);
+        intent.putExtra("myNamePatient", myNamePatient);
+        intent.putExtra("mySurnamePatient", mySurnamePatient);
+        intent.putExtra("token", token);
+        intent.putExtra("myPeselPatient", myPeselPatient);
+        startActivity(intent);
+    }
+
     private void getCountStudiesForPatient() {
-        String URL = "http://"+ip+":8080/api/patient/study/list";
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
-                null, new Response.Listener<JSONObject>() {
+        String URL = "http://"+ip+":8080/api/patient/countstudies";
+        StringRequest req = new StringRequest(Request.Method.GET, URL,
+                new Response.Listener<String>() {
 
             @Override
-            public void onResponse(JSONObject response) {
-                Log.d("Response", response.toString());
-                try {
-                    String docName = response.getString("name");
-                    String docSurname = response.getString("surname");
+            public void onResponse(String response) {
+                Log.d("Response", response);
 
-                    patientStudiesNumberTextView.setText(response.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                patientStudiesNumberTextView.setText(response);
                 Toast.makeText(getApplicationContext(), "" + response.toString(), Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
@@ -94,11 +113,9 @@ public class PatientsMenuActivity extends AppCompatActivity {
                 return headers;
             }
         };
-
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.start();
         queue.add(req);
-
     }
 
 
