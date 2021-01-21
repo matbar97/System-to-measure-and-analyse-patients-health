@@ -29,7 +29,7 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
-    public final static String ip = "192.168.99.1";
+    public final static String ip = "192.168.8.108";
     private Button loginButton, registerButton;
     private EditText editTextLogin, editTextPasswordLogin;
 

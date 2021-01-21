@@ -44,7 +44,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/accountPatientButton"
-        app:layout_constraintVertical_bias="0.130" />
+        app:layout_constraintVertical_bias="0.115" />
 
     <Button
         android:id="@+id/accountPatientButton"
@@ -68,7 +68,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.272" />
+        app:layout_constraintVertical_bias="0.193" />
 
     <TextView
         android:id="@+id/professionTextView"

@@ -39,7 +39,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 
     private Button goBackButton_PatientData, addStudyButton;
     private TextView actualPatientNameTextView, numberOfRecordsTextView;
-    String token, namePatient, surnamePatient, patientPesel, doctorsPesel, dateOfStudy,
+    String token, namePatient, surnamePatient, patientPesel, doctorsName, dateOfStudy,
             nameOfDoctorFromStudy, surnameOfDoctorFromStudy, studyObservations, wholeNameOfDoctorFromStudy;
     private RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
@@ -131,57 +131,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 
 
 
-    private String getNameAndSurnameOfDoctorFromStudy(String doctorsPesel) {
 
-        String URL = "http://"+ip+":8080/api/doctor/info/" + doctorsPesel;
-        System.out.println(doctorsPesel + " ten pesel nalezy do doktora ktory stworzyl badanie");
-        final String[] wholeName = new String[1];
-
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, URL,
-                null, new Response.Listener<JSONObject>() {
-
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("Response", response.toString());
-//                actualPatientNameTextView.setText(namePatient + " " + surnamePatient);
-                Toast.makeText(getApplicationContext(), "Siema!", Toast.LENGTH_SHORT).show();
-                try {
-                    nameOfDoctorFromStudy = response.getString("name");
-                    surnameOfDoctorFromStudy = response.getString("surname");
-                    wholeNameOfDoctorFromStudy = getNameAndSurnameOfTheDoctorFromStudyByPeselString(nameOfDoctorFromStudy, surnameOfDoctorFromStudy);
-                    wholeName[0] = wholeNameOfDoctorFromStudy;
-                    System.out.println(wholeNameOfDoctorFromStudy + " <- czy działa");
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("Error", "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_LONG).show();
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                Intent intent = getIntent();
-                token = intent.getStringExtra("token");
-                System.out.println("PatientDataFromDocPointOfView token: " + token);
-                headers.put("Authorization", "Bearer " + token);
-                return headers;
-            }
-
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.start();
-        queue.add(req);
-//        System.out.println(wholeNameOfDoctorFromStudy + " <- czy działa");
-        return wholeName[0];
-    }
 
     private void getListOfStudiesOfSinglePatient() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -201,15 +151,14 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                     try {
 
                         JSONObject jsonObject = response.getJSONObject(i);
-                        doctorsPesel = jsonObject.getString("doctorPesel");
+                        doctorsName = jsonObject.getString("nameAndSurname");
                         dateOfStudy = jsonObject.getString("dateOfStudy");
-                        System.out.println((doctorsPesel) + " to nas interesuje");
 
                         String observations = jsonObject.getString("observations");
                         Study study = new Study();
                         study.setObservations(observations);
-                        study.setDoctorName(getNameAndSurnameOfDoctorFromStudy(doctorsPesel));
                         study.setStudyDateNTime(dateOfStudy);
+                        study.setDoctorName(doctorsName);
 
                         studyList.add(study);
 

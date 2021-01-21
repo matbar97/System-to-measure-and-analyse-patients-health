@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".StudyReviewActivity">
+
     <ImageView
         android:id="@+id/reviewStudyBackgroundImageView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="#8FDDFD"
+        android:background="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

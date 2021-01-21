@@ -5,6 +5,7 @@ public class Study {
     private String observations;
     private String patientPesel;
     private String doctorName;
+    private String doctorPesel;
 
     public String getStudyDateNTime() {
         return studyDateNTime;
@@ -48,5 +49,13 @@ public class Study {
 
     public void setDoctorName(String doctorName) {
         this.doctorName = doctorName;
+    }
+
+    public String getDoctorPesel() {
+        return doctorPesel;
+    }
+
+    public void setDoctorPesel(String doctorPesel) {
+        this.doctorPesel = doctorPesel;
     }
 }
