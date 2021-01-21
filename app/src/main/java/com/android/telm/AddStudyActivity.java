@@ -47,7 +47,6 @@ public class AddStudyActivity extends AppCompatActivity {
         addAnnotationAddStudyButton = findViewById(R.id.addAnnotationAddStudyButton);
         applyStudyAddStudyButton = findViewById(R.id.applyStudyAddStudyButton);
         studyDateAddStudyEditText = findViewById(R.id.studyDateAddStudyEditText);
-        doctorNameAddStudyEditText = findViewById(R.id.doctorNameAddStudyEditText);
         observationsMultiLineTextView = findViewById(R.id.observationsAddStudyEditText);
         patientNameAddStudyTextView = findViewById(R.id.patientNameAddStudyTextView);
 
@@ -55,6 +54,10 @@ public class AddStudyActivity extends AppCompatActivity {
         name = intent.getStringExtra("name"); surname = intent.getStringExtra("surname");
         pesel = intent.getStringExtra("pesel"); token = intent.getStringExtra("token");
         patientNameAddStudyTextView.setText(name + " " + surname);
+
+
+
+
 
         applyStudyAddStudyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +73,8 @@ public class AddStudyActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void goBackToCurrentPatientData() {
 //        Intent intent = new Intent(getApplicationContext(), PatientDataFromDocPointOfViewActivity.class);
