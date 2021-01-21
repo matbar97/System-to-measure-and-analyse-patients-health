@@ -51,6 +51,8 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     registerPatientPostData();
+                    sendLoginPostData();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -141,7 +143,6 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.start();
         requestQueue.add(request);
-        sendLoginPostData();
 
     }
 
