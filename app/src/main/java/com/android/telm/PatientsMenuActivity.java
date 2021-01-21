@@ -31,7 +31,7 @@ import static com.android.telm.MainActivity.ip;
 public class PatientsMenuActivity extends AppCompatActivity {
 
     private TextView patientNameTextView, patientStudiesNumberTextView;
-    private Button myStudiesPatientButton, logoutButtonPatient;
+    private Button myStudiesPatientButton, logoutButtonPatient, accountButtonPatient;
     String myNamePatient, mySurnamePatient, token, myPeselPatient;
 
     @Override
@@ -43,6 +43,7 @@ public class PatientsMenuActivity extends AppCompatActivity {
         patientStudiesNumberTextView = findViewById(R.id.patientStudiesNumberTextView);
         myStudiesPatientButton = findViewById(R.id.myStudiesButton);
         logoutButtonPatient = findViewById(R.id.logoutPatientButton);
+        accountButtonPatient = findViewById(R.id.accountPatientButton);
 
         getPatientData();
         getCountStudiesForPatient();
@@ -59,6 +60,20 @@ public class PatientsMenuActivity extends AppCompatActivity {
                 logoutCurrentPatient();
             }
         });
+
+
+        accountButtonPatient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToPatientsDetailsActivity();
+            }
+        });
+    }
+
+    private void goToPatientsDetailsActivity() {
+        Intent intent = new Intent(this, AccountDetailsPatientActivity.class);
+        intent.putExtra("token", token);
+        startActivity(intent);
     }
 
     @Override

@@ -83,7 +83,20 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
                 logoutCurrentDoctor();
             }
         });
+        accountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToDoctorDetailsActivity();
+            }
+        });
     }
+
+    private void goToDoctorDetailsActivity() {
+        Intent intent = new Intent(this, AccountDoctorDetailsActivity.class);
+        intent.putExtra("token", token);
+        startActivity(intent);
+    }
+
     @Override
     public void onBackPressed() {
         Toast.makeText(this, "Aby wyjść z aplikacji naciśnij przycisk Wyloguj", Toast.LENGTH_SHORT).show();
