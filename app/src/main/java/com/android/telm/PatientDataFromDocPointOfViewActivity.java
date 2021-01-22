@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.android.telm.MainActivity.ip;
+import static com.android.telm.MainActivity.replace;
 
 public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity implements StudyRecyclerAdapterFromDocPointOfView.OnStudyListener {
 
@@ -142,6 +143,9 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                         String observations = jsonObject.getString("observations");
                         Study study = new Study();
                         study.setObservations("Obserwacje: " + observations);
+                        dateOfStudy = replace(dateOfStudy, 10, ' ');
+                        dateOfStudy = dateOfStudy.substring(0,dateOfStudy.indexOf("."));
+
                         study.setStudyDateNTime(dateOfStudy);
                         study.setDoctorName("Badał: dr " + doctorsName);
                         studyList.add(study);

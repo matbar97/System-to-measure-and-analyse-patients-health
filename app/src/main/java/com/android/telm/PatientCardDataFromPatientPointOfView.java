@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.android.telm.MainActivity.ip;
+import static com.android.telm.MainActivity.replace;
 
 public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  implements PatientCardRecyclerAdapter.OnStudyListener{
 
@@ -113,14 +114,15 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject jsonObject = response.getJSONObject(i);
-//                        doctorsPesel = jsonObject.getString("nameAndSurname");
+                        doctorsPesel = jsonObject.getString("nameAndSurname");
                         dateOfStudy = jsonObject.getString("dateOfStudy");
                         String studyObservationsJSON = jsonObject.getString("observations");
                         Study study = new Study();
                         studyObservations = studyObservationsJSON;
                         study.setObservations("Obserwacje: " + studyObservations);
-                        study.setDoctorName("Badał: dr Mostowiak");
-
+                        study.setDoctorName("Badał: dr " + doctorsPesel);
+                        dateOfStudy = replace(dateOfStudy, 10, ' ');
+                        dateOfStudy = dateOfStudy.substring(0,dateOfStudy.indexOf("."));
                         study.setStudyDateNTime(dateOfStudy);
 
                         studyList.add(study);

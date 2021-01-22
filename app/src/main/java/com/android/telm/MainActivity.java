@@ -180,8 +180,18 @@ public class MainActivity extends AppCompatActivity {
         if(str == null || str.isEmpty()) {
             return str;
         }
-
         return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
+    }
+
+    public static String replace(String str, int index, char replace){
+        if(str==null){
+            return str;
+        }else if(index<0 || index>=str.length()){
+            return str;
+        }
+        char[] chars = str.toCharArray();
+        chars[index] = replace;
+        return String.valueOf(chars);
     }
 }
 
