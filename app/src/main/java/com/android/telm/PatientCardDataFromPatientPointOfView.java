@@ -118,8 +118,8 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
                         String studyObservationsJSON = jsonObject.getString("observations");
                         Study study = new Study();
                         studyObservations = studyObservationsJSON;
-                        study.setObservations(studyObservations);
-                        study.setDoctorName("Mostowiak");
+                        study.setObservations("Obserwacje: " + studyObservations);
+                        study.setDoctorName("Badał: dr Mostowiak");
 
                         study.setStudyDateNTime(dateOfStudy);
 

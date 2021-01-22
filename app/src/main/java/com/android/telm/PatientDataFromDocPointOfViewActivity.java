@@ -141,9 +141,9 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 
                         String observations = jsonObject.getString("observations");
                         Study study = new Study();
-                        study.setObservations(observations);
+                        study.setObservations("Obserwacje: " + observations);
                         study.setStudyDateNTime(dateOfStudy);
-                        study.setDoctorName(doctorsName);
+                        study.setDoctorName("Badał: dr " + doctorsName);
                         studyList.add(study);
 
                     } catch (JSONException e) {

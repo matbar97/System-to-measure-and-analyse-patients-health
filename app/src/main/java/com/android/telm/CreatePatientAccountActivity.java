@@ -87,7 +87,6 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
         if((!name.isEmpty() && !surname.isEmpty() && !pesel.isEmpty() && !password.isEmpty() && !username.isEmpty()) ) {
             if(isChecksumValid(pesel)) {
 
-
                 jsonBody.put("name", capitalize(name));
                 jsonBody.put("surname", capitalize(surname));
                 jsonBody.put("pesel", pesel);
