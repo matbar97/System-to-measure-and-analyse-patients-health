@@ -105,10 +105,6 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
-//        String peselNew = patientPesel;
-//        System.out.println("Pesel Kowalskiego: " + peselNew);
-        System.out.println("Token: " + token);
-        System.out.println("Obserwacje: " + studyObservations);
 
         String URL = "http://" + ip + ":8080/api/patient/study/list";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
@@ -116,17 +112,13 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
             public void onResponse(JSONArray response) {
                 for (int i = 0; i < response.length(); i++) {
                     try {
-
                         JSONObject jsonObject = response.getJSONObject(i);
-                        doctorsPesel = jsonObject.getString("doctorPesel");
+//                        doctorsPesel = jsonObject.getString("nameAndSurname");
                         dateOfStudy = jsonObject.getString("dateOfStudy");
-                        System.out.println((doctorsPesel) + " to nas interesuje");
-
                         String studyObservationsJSON = jsonObject.getString("observations");
                         Study study = new Study();
                         studyObservations = studyObservationsJSON;
                         study.setObservations(studyObservations);
-//                        study.setDoctorName(getNameAndSurnameOfDoctorFromStudy(doctorsPesel));
                         study.setDoctorName("Mostowiak");
 
                         study.setStudyDateNTime(dateOfStudy);
@@ -154,8 +146,6 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-//                Intent intent = getIntent();
-//            token = intent.getStringExtra("token");
                 System.out.println("SearchForPatientToken: " + token);
                 headers.put("Authorization", "Bearer " + token);
                 return headers;

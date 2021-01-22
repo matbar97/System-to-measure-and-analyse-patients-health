@@ -27,12 +27,15 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.android.telm.MainActivity.capitalize;
 import static com.android.telm.MainActivity.ip;
+import static com.android.telm.MainActivity.isChecksumValid;
 
 public class CreatePatientAccountActivity extends AppCompatActivity {
     private Button applyButton, goBackButton;
     private EditText editTextName, editTextPESEL,
             editTextEmail, editTextPassword, editTextSurname;
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +54,17 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     registerPatientPostData();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
                     sendLoginPostData();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-        });
+            });
 
-//Listeners
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,17 +78,31 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
 
         String URL = "http://"+ip+":8080/auth/register/add";
         final JSONObject jsonBody = new JSONObject();
-        final String name = editTextName.getText().toString();
+        String name = editTextName.getText().toString();
         final String surname = editTextSurname.getText().toString();
         final String pesel = editTextPESEL.getText().toString();
         final String password = editTextPassword.getText().toString();
         final String username = editTextEmail.getText().toString();
 
-        jsonBody.put("name", name);
-        jsonBody.put("surname", surname);
-        jsonBody.put("pesel", pesel);
-        jsonBody.put("password", password);
-        jsonBody.put("username", username);
+        if((!name.isEmpty() && !surname.isEmpty() && !pesel.isEmpty() && !password.isEmpty() && !username.isEmpty()) ) {
+            if(isChecksumValid(pesel)) {
+
+
+                jsonBody.put("name", capitalize(name));
+                jsonBody.put("surname", capitalize(surname));
+                jsonBody.put("pesel", pesel);
+                jsonBody.put("password", password);
+                jsonBody.put("username", username);
+
+            } else {
+                Toast.makeText(this, "Podano niewłaściwy pesel", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        else {
+            Toast.makeText(this, "Uzupełnij wszystkie dane", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         final String requestBody = jsonBody.toString();
 
@@ -93,6 +112,12 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.i("VOLLEY", response.toString());
+                        try {
+                            sendLoginPostData();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                         Toast.makeText(getApplicationContext(), "Zarejestrowano " + username, Toast.LENGTH_SHORT).show();
                     }
                 },
@@ -100,19 +125,20 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("Problem", "Error: " + error.getMessage());
-                        Toast.makeText(getApplicationContext()
-                                , "Błąd autoryzacji."
-                                , Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext()
+//                                , "Błąd autoryzacji."
+//                                , Toast.LENGTH_SHORT).show();
                     }
                 }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("username", username);
-                params.put("password", password);
-                params.put("name", name);
-                params.put("surname", surname);
-                params.put("pesel", pesel);
+//                params.put("username", username);
+//                params.put("password", password);
+//                params.put("name", name);
+//                params.put("surname", surname);
+//                params.put("pesel", pesel);
+
                 return params;
             }
 
@@ -120,7 +146,6 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-
                 return headers;
 
             }
@@ -129,6 +154,7 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
             public byte[] getBody() {
                 try {
                     return requestBody == null ? null : requestBody.getBytes("utf-8");
+
                 } catch (UnsupportedEncodingException uee) {
                     VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
                     return null;
@@ -165,18 +191,11 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         Log.i("VOLLEY", response.toString());
                         try {
-                            String token = response.getString("token");
-//                            if (username.contains("doctor")){
-//                                Intent intent = new Intent(getApplicationContext(), DoctorsMainMenuActivity.class);
-//                                intent.putExtra("token", token);
-//                                startActivity(intent);
-//                                Toast.makeText(getApplicationContext(), "Witaj " + username, Toast.LENGTH_SHORT).show();
-//                            } else  {
+                            token = response.getString("token");
                                 Intent intent = new Intent(getApplicationContext(), PatientsMenuActivity.class);
                                 intent.putExtra("token", token);
                                 startActivity(intent);
                                 Toast.makeText(getApplicationContext(), "Witaj " + username, Toast.LENGTH_SHORT).show();
-//                            }
                         }
                         catch (JSONException e) {
                             e.printStackTrace();
@@ -187,9 +206,9 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("Problem", "Error: " + error.getMessage());
-                        Toast.makeText(getApplicationContext()
-                                ,"Nie ma Cię w systemie. Zarejestruj się lub wpisz właściwe dane"
-                                ,Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext()
+//                                ,"Nie ma Cię w systemie. Zarejestruj się lub wpisz właściwe dane"
+//                                ,Toast.LENGTH_SHORT).show();
                     }
                 })
         {
@@ -205,7 +224,6 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-
                 return headers;
 
             }

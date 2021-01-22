@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -37,7 +36,6 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
 
     private Button arrowBackSearchForPatientButton;
     private EditText searchForPatientEditText;
-
     String token;
 
     private RecyclerView mList;
@@ -143,7 +141,6 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
     @Override
     public void onPatientClick(int position) {
         Patient patientClicked = patientList.get(position);
-        Toast.makeText(getApplicationContext(), "Kliknieto w pacjenta: " + patientClicked.getName(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getApplicationContext(), PatientDataFromDocPointOfViewActivity.class);
         intent.putExtra("name", patientClicked.getName());
         intent.putExtra("surname", patientClicked.getSurname());

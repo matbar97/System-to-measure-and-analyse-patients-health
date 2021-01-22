@@ -14,7 +14,6 @@ public class PatientCardRecyclerAdapter extends RecyclerView.Adapter<PatientCard
     private Context context;
     private List<Study> studyList;
 
-    //declare interface
     private PatientCardRecyclerAdapter.OnStudyListener mOnStudyListener;
 
 
@@ -62,7 +61,6 @@ public class PatientCardRecyclerAdapter extends RecyclerView.Adapter<PatientCard
         }
     }
 
-    //make interface like this
     public interface OnStudyListener {
         void onStudyClick(int position);
     }

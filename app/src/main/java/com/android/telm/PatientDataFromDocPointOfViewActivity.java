@@ -40,7 +40,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
     private Button goBackButton_PatientData, addStudyButton;
     private TextView actualPatientNameTextView, numberOfRecordsTextView;
     String token, namePatient, surnamePatient, patientPesel, doctorsName, dateOfStudy,
-            nameOfDoctorFromStudy, surnameOfDoctorFromStudy, studyObservations, wholeNameOfDoctorFromStudy;
+            studyObservations;
     private RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
@@ -54,7 +54,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 
         mList = findViewById(R.id.studyListFromDocRecyclerView);
 
-        //Intent from PreviousActivity
         Intent intent = getIntent();
         token = intent.getStringExtra("token");
         namePatient = intent.getStringExtra("name");
@@ -63,7 +62,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         studyObservations = intent.getStringExtra("observations");
 
         getListOfStudiesOfSinglePatient();
-
         studyList = new ArrayList<>();
 
         adapter = new StudyRecyclerAdapterFromDocPointOfView(getApplicationContext(), studyList, this);
@@ -82,8 +80,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         actualPatientNameTextView = findViewById(R.id.actualPatientNameImageView);
         numberOfRecordsTextView = findViewById(R.id.numberOfRecordsTextView);
 
-//        adapter.notifyDataSetChanged();
-
         addStudyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +93,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
             }
         });
         getPatientCardCreatedByDoctor();
-//        getNumberOfStudiesForPatient();
     }
 
     private void goBackToPatientListInDoctorAccount() {
@@ -122,16 +117,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 
         startActivity(intent);
     }
-
-    private String getNameAndSurnameOfTheDoctorFromStudyByPeselString (String name, String surname) {
-        String wholeName;
-        wholeName = name + " " + surname;
-        return wholeName;
-    }
-
-
-
-
 
     private void getListOfStudiesOfSinglePatient() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -159,7 +144,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                         study.setObservations(observations);
                         study.setStudyDateNTime(dateOfStudy);
                         study.setDoctorName(doctorsName);
-
                         studyList.add(study);
 
                     } catch (JSONException e) {
@@ -183,8 +167,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-//                Intent intent = getIntent();
-//            token = intent.getStringExtra("token");
                 System.out.println("SearchForPatientToken: " + token);
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
@@ -208,13 +190,12 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
             public void onResponse(JSONObject response) {
                 Log.d("Response", response.toString());
                 actualPatientNameTextView.setText(namePatient + " " + surnamePatient);
-                Toast.makeText(getApplicationContext(), "Siema!", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("Error", "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), "Błąd", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
@@ -222,12 +203,10 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                 HashMap<String, String> headers = new HashMap<String, String>();
                 Intent intent = getIntent();
                 token = intent.getStringExtra("token");
-                System.out.println("PatientDataFromDocPointOfView token: " + token);
+//                System.out.println("PatientDataFromDocPointOfView token: " + token);
                 headers.put("Authorization", "Bearer " + token);
-//                headers.put("Content-Type", "application/json");
                 return headers;
             }
-
         };
 
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -236,7 +215,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
     }
 
     private void goToStudyCreation() {
-
         Intent intent = new Intent(this, AddStudyActivity.class);
         intent.putExtra("name", namePatient);
         intent.putExtra("surname", surnamePatient);

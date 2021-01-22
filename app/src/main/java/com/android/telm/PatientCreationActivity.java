@@ -27,7 +27,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.android.telm.MainActivity.capitalize;
 import static com.android.telm.MainActivity.ip;
+import static com.android.telm.MainActivity.isChecksumValid;
 
 public class PatientCreationActivity extends AppCompatActivity {
 
@@ -66,9 +68,7 @@ public class PatientCreationActivity extends AppCompatActivity {
     }
 
     private void goBackToDoctorsMainMenu() {
-//        Intent intent = new Intent (getApplicationContext(), DoctorsMainMenuActivity.class);
-//        intent.putExtra("token", token);
-//        startActivity(intent);
+;
         onBackPressed();
     }
 
@@ -80,9 +80,19 @@ public class PatientCreationActivity extends AppCompatActivity {
         final String surname = surnameEditText.getText().toString();
         final String pesel = peselEditText.getText().toString();
 
-        jsonBody.put("name", name);
-        jsonBody.put("surname", surname);
-        jsonBody.put("pesel", pesel);
+        if((!name.isEmpty() && !surname.isEmpty() && !pesel.isEmpty()) ) {
+            if (isChecksumValid(pesel)) {
+                jsonBody.put("name", capitalize(name));
+                jsonBody.put("surname", capitalize(surname));
+                jsonBody.put("pesel", pesel);
+            } else {
+                Toast.makeText(this, "Podano niewłaściwy pesel", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } else{
+            Toast.makeText(this, "Uzupełnij wszystkie dane", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         final String requestBody = jsonBody.toString();
 

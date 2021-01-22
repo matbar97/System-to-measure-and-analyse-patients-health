@@ -29,15 +29,15 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
-    public final static String ip = "192.168.8.108";
+    public final static String ip = "192.168.99.1";
     private Button loginButton, registerButton;
     private EditText editTextLogin, editTextPasswordLogin;
+    public static final int[] WEIGHTS = new int[]{1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // RequestQueue For Handle Network Request
 
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
@@ -63,11 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        Toast.makeText(this, "Nie możesz wrócić do aplikacji.", Toast.LENGTH_SHORT).show();
-//        return;
-//    }
 
     private void goToAccountCreation() {
         Intent intent = new Intent(this, CreatePatientAccountActivity.class);
@@ -99,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 Toast.makeText(getApplicationContext(), "Witaj " + username, Toast.LENGTH_SHORT).show();
                             }
-                            else { //(username.contains("user")) {
+                            else {
                                 Intent intent = new Intent(getApplicationContext(), PatientsMenuActivity.class);
                                 intent.putExtra("token", token);
                                 startActivity(intent);
@@ -159,5 +154,34 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.start();
         requestQueue.add(request);
 
-    }}
+    }
+
+
+    public final static boolean isChecksumValid(String pesel) {
+        if (pesel == null) return false;
+
+        if (pesel.length() != 11) return false;
+
+        int checksum = 0;
+        for (int i = 0; i < 10; i++)
+            checksum += Character.getNumericValue(pesel.charAt(i)) * WEIGHTS[i];
+
+        checksum %= 10;
+        checksum = 10 - checksum;
+        checksum %= 10;
+
+        int expectedChecksum = Character.getNumericValue(pesel.charAt(10));
+
+        return checksum == expectedChecksum;
+
+    }
+
+    public static String capitalize(String str) {
+        if(str == null || str.isEmpty()) {
+            return str;
+        }
+
+        return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
+    }
+}
 

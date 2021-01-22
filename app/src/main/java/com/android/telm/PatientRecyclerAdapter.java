@@ -1,33 +1,19 @@
 package com.android.telm;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
-
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecyclerAdapter.ViewHolder> {
 
     private Context context;
     private List<Patient> patientList;
 
-    //declare interface
     private OnPatientListener mOnPatientListener;
-
-
 
     public PatientRecyclerAdapter(Context context, List<Patient> patientList, OnPatientListener mOnPatientListener) {
         this.context = context;
@@ -46,7 +32,6 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
         Patient patient = patientList.get(position);
         holder.pName.setText(patient.getName() + " " + patient.getSurname());
         holder.pPesel.setText(patient.getPesel());
-
     }
 
     @Override
@@ -75,7 +60,6 @@ public class PatientRecyclerAdapter extends RecyclerView.Adapter<PatientRecycler
         }
     }
 
-    //make interface like this
     public interface OnPatientListener {
         void onPatientClick(int position);
     }

@@ -35,9 +35,9 @@ public class AddStudyActivity extends AppCompatActivity {
 
 
     private Button backAddStudyButton, addAnnotationAddStudyButton, applyStudyAddStudyButton;
-    private EditText studyDateAddStudyEditText, doctorNameAddStudyEditText, observationsMultiLineTextView;
+    private EditText observationsMultiLineTextView;
     private TextView patientNameAddStudyTextView;
-    String name, surname, pesel, token, observations;
+    String name, surname, pesel, token, observations, doctorsName, dateOfStudy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +46,16 @@ public class AddStudyActivity extends AppCompatActivity {
         backAddStudyButton = findViewById(R.id.backAddStudyButton);
         addAnnotationAddStudyButton = findViewById(R.id.addAnnotationAddStudyButton);
         applyStudyAddStudyButton = findViewById(R.id.applyStudyAddStudyButton);
-        studyDateAddStudyEditText = findViewById(R.id.studyDateAddStudyEditText);
         observationsMultiLineTextView = findViewById(R.id.observationsAddStudyEditText);
         patientNameAddStudyTextView = findViewById(R.id.patientNameAddStudyTextView);
 
         Intent intent = getIntent();
         name = intent.getStringExtra("name"); surname = intent.getStringExtra("surname");
         pesel = intent.getStringExtra("pesel"); token = intent.getStringExtra("token");
+        doctorsName = intent.getStringExtra("doctorsName"); dateOfStudy=intent.getStringExtra("dateOfStudy");
         patientNameAddStudyTextView.setText(name + " " + surname);
-
-
-
-
+        System.out.println(doctorsName);
+        System.out.println(dateOfStudy);
 
         applyStudyAddStudyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,12 +75,6 @@ public class AddStudyActivity extends AppCompatActivity {
 
 
     private void goBackToCurrentPatientData() {
-//        Intent intent = new Intent(getApplicationContext(), PatientDataFromDocPointOfViewActivity.class);
-//        intent.putExtra("token", token);
-//        intent.putExtra("name", name);
-//        intent.putExtra("surname", surname);
-//        intent.putExtra("pesel", pesel);
-//        startActivity(intent);
         onBackPressed();
     }
 
@@ -91,11 +83,14 @@ public class AddStudyActivity extends AppCompatActivity {
 
         String URL = "http://"+ip+":8080/api/doctor/study/add";
         final JSONObject jsonBody = new JSONObject();
-//        final String name_n_surname = patientNameAddStudyTextView.getText().toString();
         try {
-            jsonBody.put("patientPesel", pesel);
-            jsonBody.put("observations", observations);
-
+            if(!observations.isEmpty()) {
+                jsonBody.put("patientPesel", pesel);
+                jsonBody.put("observations", observations);
+            } else {
+                Toast.makeText(this, "Uzupełnij obserwacje", Toast.LENGTH_SHORT).show();
+                return;
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -115,8 +110,6 @@ public class AddStudyActivity extends AppCompatActivity {
                         intent.putExtra("name", name);
                         intent.putExtra("surname", surname);
                         intent.putExtra("token", token);
-
-                        System.out.println("Token from AddStudyAct: ... " + token);
                         startActivity(intent);
 
                         Toast.makeText(getApplicationContext(), "Dodano badanie pacjentowi "
@@ -137,9 +130,6 @@ public class AddStudyActivity extends AppCompatActivity {
             @Override
             protected Map<String,String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-//                params.put("name", name);
-//                params.put("surname", surname);
-//                params.put("patientPesel", pesel);
                 return params;
             }
 

@@ -10,19 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-/**
- * Created by Mati on 19/01/2021.
- */
-
 public class StudyRecyclerAdapterFromDocPointOfView extends RecyclerView.Adapter<StudyRecyclerAdapterFromDocPointOfView.ViewHolder> {
 
     private Context context;
     private List<Study> studyList;
 
-    //declare interface
     private StudyRecyclerAdapterFromDocPointOfView.OnStudyListener mOnStudyListener;
-
-
 
     public StudyRecyclerAdapterFromDocPointOfView(Context context, List<Study> studyList, StudyRecyclerAdapterFromDocPointOfView.OnStudyListener mOnStudyListener) {
         this.context = context;
@@ -69,7 +62,6 @@ public class StudyRecyclerAdapterFromDocPointOfView extends RecyclerView.Adapter
         }
     }
 
-    //make interface like this
     public interface OnStudyListener {
         void onStudyClick(int position);
     }

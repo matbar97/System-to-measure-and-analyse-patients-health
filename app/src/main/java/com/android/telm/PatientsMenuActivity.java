@@ -108,9 +108,7 @@ public class PatientsMenuActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.d("Response", response);
-
                 patientStudiesNumberTextView.setText(response);
-                Toast.makeText(getApplicationContext(), "" + response.toString(), Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -152,7 +150,6 @@ public class PatientsMenuActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getApplicationContext(), "" + response.toString(), Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener() {
             @Override

@@ -1,5 +1,6 @@
 package com.android.telm;
 
+
 public class Patient {
     public Patient() {
 
@@ -8,7 +9,6 @@ public class Patient {
     private String name;
     private String surname;
     private String pesel;
-    private String id;
 
     @Override
     public String toString() {
@@ -29,14 +29,6 @@ public class Patient {
         this.name = patient.getName();
         this.pesel = patient.getPesel();
         this.surname = patient.getSurname();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -62,4 +54,5 @@ public class Patient {
     public void setPesel(String pesel) {
         this.pesel = pesel;
     }
+
 }
