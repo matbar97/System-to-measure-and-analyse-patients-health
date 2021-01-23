@@ -34,7 +34,7 @@ public class StudyRecyclerAdapterFromDocPointOfView extends RecyclerView.Adapter
         Study study = studyList.get(position);
         holder.pDoctorName.setText(study.getDoctorName());
         holder.pObservations.setText(study.getObservations());
-
+        holder.pStudyDate.setText(study.getDateAdded());
     }
 
     @Override
@@ -45,13 +45,14 @@ public class StudyRecyclerAdapterFromDocPointOfView extends RecyclerView.Adapter
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         StudyRecyclerAdapterFromDocPointOfView.OnStudyListener onStudyListener;
         public TextView pDoctorName;
-        public TextView pObservations;
+        public TextView pObservations, pStudyDate;
 
         public ViewHolder(View itemView, StudyRecyclerAdapterFromDocPointOfView.OnStudyListener onStudyListener) {
             super(itemView);
 
             pDoctorName = itemView.findViewById(R.id.doctors_surname_txt);
             pObservations = itemView.findViewById(R.id.observations_txt);
+            pStudyDate = itemView.findViewById(R.id.date_study_txt);
             this.onStudyListener = onStudyListener;
             itemView.setOnClickListener(this);
         }

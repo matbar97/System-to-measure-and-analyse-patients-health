@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Nazwisko lekarza"
+        android:textColor="#2699fb"
         android:textSize="18sp"/>
 
 
@@ -17,6 +18,13 @@
         android:id="@+id/observations_txt_patient_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#2699fb"
         android:text="Obserwacje"/>
+    <TextView
+        android:id="@+id/studyDate_txt_patient_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#2699fb"
+        android:text="Data badania"/>
 
 </LinearLayout>

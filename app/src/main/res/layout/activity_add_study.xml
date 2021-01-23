@@ -28,6 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <ImageView
         android:id="@+id/addStudyImageView"
         android:layout_width="168dp"
@@ -53,11 +54,12 @@
         android:id="@+id/dataBadania"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:hint="Wybierz datę"
-        app:layout_constraintTop_toBottomOf="@+id/applyStudyAddStudyButton"
+        android:layout_marginTop="44dp"
+        android:hint="Wybierz datę badania"
+        android:textColor="#2699fb"
+        app:layout_constraintTop_toBottomOf="@+id/addStudyBackgroundImageView"
         tools:ignore="InvalidId,MissingConstraints"
-        tools:layout_editor_absoluteX="-25dp" />
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/patientNameAddStudyTextView"
@@ -76,20 +78,21 @@
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="wrap_content"
+        android:layout_width="77dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/observationsAddStudyEditText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintHorizontal_bias="0.041"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/patientNameAddStudyTextView"
+        app:layout_constraintTop_toBottomOf="@+id/dataBadania"
+        app:layout_constraintVertical_bias="0.575"
         app:srcCompat="@drawable/observations" />
 
     <EditText
         android:id="@+id/observationsAddStudyEditText"
         android:layout_width="match_parent"
-        android:layout_height="158dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="190dp"
+        android:layout_marginTop="44dp"
         android:ems="10"
         android:gravity="start|top"
         android:hint="Tutaj wpisać opis medyczny"
@@ -98,64 +101,41 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
-
-    <ImageView
-        android:id="@+id/imageView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.044"
-        app:layout_constraintStart_toEndOf="@+id/imageView9"
-        app:layout_constraintTop_toBottomOf="@+id/observationsAddStudyEditText"
-        app:srcCompat="@drawable/annotations_txt" />
-
-    <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.023"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/observationsAddStudyEditText"
-        app:srcCompat="@drawable/annotations_icon" />
-
-    <Button
-        android:id="@+id/addAnnotationAddStudyButton"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/add_study"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.028"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView9"
-        app:srcCompat="@drawable/add_study" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
-        android:text="Dodaj załącznik"
-        android:textColor="#2699fb"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/addAnnotationAddStudyButton"
-        app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+        app:layout_constraintTop_toBottomOf="@+id/dataBadania" />
 
     <Button
         android:id="@+id/applyStudyAddStudyButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
         android:background="@drawable/apply_study"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/observationsAddStudyEditText"
+        app:layout_constraintVertical_bias="0.968" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/dataBadania"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/patientNameAddStudyTextView"
+        app:layout_constraintVertical_bias="0.846"
+        app:srcCompat="@drawable/study_date" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="34dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="@+id/dataBadania"
+        app:layout_constraintHorizontal_bias="0.928"
+        app:layout_constraintStart_toStartOf="@+id/dataBadania"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8"
+        app:srcCompat="@drawable/calendar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

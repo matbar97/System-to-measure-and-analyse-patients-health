@@ -102,9 +102,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         startActivity(intent);
     }
 
-
-
-
     @Override
     public void onStudyClick(int position) {
         Study studyClicked = studyList.get(position);
@@ -116,7 +113,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         intent.putExtra("name", namePatient);
         intent.putExtra("surname", surnamePatient);
         intent.putExtra("peselPatient", patientPesel);
-
         startActivity(intent);
     }
 
@@ -136,16 +132,15 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
             public void onResponse(JSONArray response) {
                 for (int i = 0; i < response.length(); i++) {
                     try {
-
                         JSONObject jsonObject = response.getJSONObject(i);
                         doctorsName = jsonObject.getString("nameAndSurname");
                         dateOfStudy = jsonObject.getString("dateOfStudy");
                         dateOfRealStudy = jsonObject.getString("dateAdded");
-
                         String observations = jsonObject.getString("observations");
+
                         Study study = new Study();
                         study.setObservations("Obserwacje: " + observations);
-                        study.setDateAdded(dateOfRealStudy);
+                        study.setDateAdded("Data badania: " + dateOfRealStudy);
                         dateOfStudy = replace(dateOfStudy, 10, ' ');
                         dateOfStudy = dateOfStudy.substring(0,dateOfStudy.indexOf("."));
 
@@ -159,7 +154,6 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                     }
                 }
                 numberOfRecordsTextView.setText(String.valueOf(studyList.size()));
-
                 adapter.notifyDataSetChanged();
                 progressDialog.dismiss();
             }

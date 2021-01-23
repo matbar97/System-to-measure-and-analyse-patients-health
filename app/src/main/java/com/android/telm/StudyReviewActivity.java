@@ -10,7 +10,7 @@ import android.widget.TextView;
 public class StudyReviewActivity extends AppCompatActivity {
 
     private Button backReviewStudyButton;
-    private TextView patientNameReviewStudyTextView, studyDateReviewStudyTextView,
+    private TextView patientNameReviewStudyTextView, studyDateReviewStudyTextView, addedStudyDateReviewStudyTextView,
             doctorNameReviewStudyTextView, observationsReviewStudyTextView, dateOfStudyTextView;
     String token, doctorWholeName, namePatient, surnamePatient, peselPatient, observations, dateOfStudy, dateOfRealStudy;
 
@@ -23,6 +23,7 @@ public class StudyReviewActivity extends AppCompatActivity {
         studyDateReviewStudyTextView = findViewById(R.id.studyDateReviewStudyTextView);
         doctorNameReviewStudyTextView = findViewById(R.id.doctorNameReviewStudyTextView);
         observationsReviewStudyTextView = findViewById(R.id.observationsReviewStudyTextView);
+        addedStudyDateReviewStudyTextView = findViewById(R.id.dateOfStudyTextView2);
 
         Intent intent = getIntent();
         token = intent.getStringExtra("token"); doctorWholeName = intent.getStringExtra("doctorName");
@@ -33,10 +34,11 @@ public class StudyReviewActivity extends AppCompatActivity {
         surnamePatient = intent.getStringExtra("surname");
         peselPatient = intent.getStringExtra("peselPatient");
 
-        observationsReviewStudyTextView.setText(observations);
-        doctorNameReviewStudyTextView.setText(doctorWholeName);
-        studyDateReviewStudyTextView.setText(dateOfStudy);
+        observationsReviewStudyTextView.setText(observations.replace("Obserwacje: ", ""));
+        doctorNameReviewStudyTextView.setText(doctorWholeName.replace("Badał: ", ""));
+        studyDateReviewStudyTextView.setText(dateOfRealStudy.replace("Data badania: ", ""));
         patientNameReviewStudyTextView.setText(namePatient + " " + surnamePatient);
+        addedStudyDateReviewStudyTextView.setText(dateOfStudy);
 
         backReviewStudyButton.setOnClickListener(new View.OnClickListener() {
             @Override

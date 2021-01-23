@@ -43,7 +43,7 @@ import static com.android.telm.MainActivity.ip;
 public class AddStudyActivity extends AppCompatActivity {
 
 
-    private Button backAddStudyButton, addAnnotationAddStudyButton, applyStudyAddStudyButton;
+    private Button backAddStudyButton, applyStudyAddStudyButton;
     private EditText observationsMultiLineTextView, dataBadania;
     private TextView patientNameAddStudyTextView;
     String name, surname, pesel, token, observations, doctorsName, dateOfStudy;
@@ -53,7 +53,6 @@ public class AddStudyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_study);
         backAddStudyButton = findViewById(R.id.backAddStudyButton);
-        addAnnotationAddStudyButton = findViewById(R.id.addAnnotationAddStudyButton);
         applyStudyAddStudyButton = findViewById(R.id.applyStudyAddStudyButton);
         observationsMultiLineTextView = findViewById(R.id.observationsAddStudyEditText);
         patientNameAddStudyTextView = findViewById(R.id.patientNameAddStudyTextView);
@@ -142,12 +141,12 @@ public class AddStudyActivity extends AppCompatActivity {
         String URL = "http://" + ip + ":8080/api/doctor/study/add";
         final JSONObject jsonBody = new JSONObject();
         try {
-            if (!observations.isEmpty()) {
+            if (!observations.isEmpty() && !dataBadania.getText().toString().isEmpty()) {
                 jsonBody.put("patientPesel", pesel);
                 jsonBody.put("dateAdded", dataBadania.getText().toString());
                 jsonBody.put("observations", observations);
             } else {
-                Toast.makeText(this, "Uzupełnij obserwacje", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Uzupełnij dane badania", Toast.LENGTH_SHORT).show();
                 return;
             }
         } catch (JSONException e) {

@@ -34,6 +34,7 @@ public class PatientCardRecyclerAdapter extends RecyclerView.Adapter<PatientCard
         Study study = studyList.get(position);
         holder.pDoctorName.setText(study.getDoctorName());
         holder.pObservations.setText(study.getObservations());
+        holder.pStudyDate.setText(study.getDateAdded());
     }
 
     @Override
@@ -44,13 +45,14 @@ public class PatientCardRecyclerAdapter extends RecyclerView.Adapter<PatientCard
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         PatientCardRecyclerAdapter.OnStudyListener onStudyListener;
         public TextView pDoctorName;
-        public TextView pObservations;
+        public TextView pObservations, pStudyDate;
 
         public ViewHolder(View itemView, PatientCardRecyclerAdapter.OnStudyListener onStudyListener) {
             super(itemView);
 
             pDoctorName = itemView.findViewById(R.id.doctors_surname_txt_patient_view);
             pObservations = itemView.findViewById(R.id.observations_txt_patient_view);
+            pStudyDate = itemView.findViewById(R.id.studyDate_txt_patient_view);
             this.onStudyListener = onStudyListener;
             itemView.setOnClickListener(this);
         }

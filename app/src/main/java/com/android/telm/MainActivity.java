@@ -29,7 +29,7 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
-    public final static String ip = "192.168.1.11";
+    public final static String ip = "192.168.99.1";
     private Button loginButton, registerButton;
     private EditText editTextLogin, editTextPasswordLogin;
     public static final int[] WEIGHTS = new int[]{1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
@@ -75,9 +75,12 @@ public class MainActivity extends AppCompatActivity {
         final String username = editTextLogin.getText().toString();
         final String pwd = editTextPasswordLogin.getText().toString();
 
+//        if(!username.isEmpty() && !pwd.isEmpty()){
         jsonBody.put("username", username);
         jsonBody.put("password", pwd);
-
+//        } else {
+//            Toast.makeText(getApplicationContext(), "Uzupełnij wszystkie pola by się zalogować", Toast.LENGTH_SHORT).show();
+//        }
         final String requestBody = jsonBody.toString();
 
         JsonObjectRequest request = new JsonObjectRequest(

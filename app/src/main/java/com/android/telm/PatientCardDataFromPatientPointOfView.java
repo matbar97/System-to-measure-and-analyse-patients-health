@@ -36,7 +36,7 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
 
     private TextView patientNameTextViewPatientView, numberOfRecordsTextViewPatientView;
     private Button goBackToPatientMainMenuButton;
-    String myNamePatient, mySurnamePatient, token, myPeselPatient, studyObservations, doctorsPesel, dateOfStudy;
+    String myNamePatient, mySurnamePatient, token, myPeselPatient, studyObservations, doctorsPesel, dateOfStudy, dateAdded;
     private RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
@@ -94,6 +94,7 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
         intent.putExtra("observations", studyClicked.getObservations());
         intent.putExtra("doctorName", studyClicked.getDoctorName());
         intent.putExtra("date", studyClicked.getStudyDateNTime());
+        intent.putExtra("dateOfStudy", studyClicked.getDateAdded());
         intent.putExtra("name", myNamePatient);
         intent.putExtra("surname", mySurnamePatient);
         intent.putExtra("peselPatient", myPeselPatient);
@@ -116,6 +117,7 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
                         JSONObject jsonObject = response.getJSONObject(i);
                         doctorsPesel = jsonObject.getString("nameAndSurname");
                         dateOfStudy = jsonObject.getString("dateOfStudy");
+                        dateAdded = jsonObject.getString("dateAdded");
                         String studyObservationsJSON = jsonObject.getString("observations");
                         Study study = new Study();
                         studyObservations = studyObservationsJSON;
@@ -124,7 +126,7 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
                         dateOfStudy = replace(dateOfStudy, 10, ' ');
                         dateOfStudy = dateOfStudy.substring(0,dateOfStudy.indexOf("."));
                         study.setStudyDateNTime(dateOfStudy);
-
+                        study.setDateAdded("Data badania: " + dateAdded);
                         studyList.add(study);
 
                     } catch (JSONException e) {
