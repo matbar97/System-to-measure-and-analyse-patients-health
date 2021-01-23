@@ -11,8 +11,8 @@ public class StudyReviewActivity extends AppCompatActivity {
 
     private Button backReviewStudyButton;
     private TextView patientNameReviewStudyTextView, studyDateReviewStudyTextView,
-            doctorNameReviewStudyTextView, observationsReviewStudyTextView;
-    String token, doctorWholeName, namePatient, surnamePatient, peselPatient, observations, dateOfStudy;
+            doctorNameReviewStudyTextView, observationsReviewStudyTextView, dateOfStudyTextView;
+    String token, doctorWholeName, namePatient, surnamePatient, peselPatient, observations, dateOfStudy, dateOfRealStudy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,7 @@ public class StudyReviewActivity extends AppCompatActivity {
         token = intent.getStringExtra("token"); doctorWholeName = intent.getStringExtra("doctorName");
         observations = intent.getStringExtra("observations");
         dateOfStudy = intent.getStringExtra("date");
+        dateOfRealStudy = intent.getStringExtra("dateOfStudy");
         namePatient = intent.getStringExtra("name");
         surnamePatient = intent.getStringExtra("surname");
         peselPatient = intent.getStringExtra("peselPatient");

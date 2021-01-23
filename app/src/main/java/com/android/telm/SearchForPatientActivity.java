@@ -79,6 +79,7 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
                 JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject jsonObject = response.getJSONObject(i);
@@ -99,7 +100,9 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
 
                         adapter.notifyDataSetChanged();
                         progressDialog.dismiss();
+
                     }
+
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {

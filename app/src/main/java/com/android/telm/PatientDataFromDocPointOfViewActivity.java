@@ -40,7 +40,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
 
     private Button goBackButton_PatientData, addStudyButton;
     private TextView actualPatientNameTextView, numberOfRecordsTextView;
-    String token, namePatient, surnamePatient, patientPesel, doctorsName, dateOfStudy,
+    String token, namePatient, surnamePatient, patientPesel, doctorsName, dateOfStudy,dateOfRealStudy,
             studyObservations;
     private RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
@@ -112,6 +112,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         intent.putExtra("observations", studyClicked.getObservations());
         intent.putExtra("doctorName", studyClicked.getDoctorName());
         intent.putExtra("date", studyClicked.getStudyDateNTime());
+        intent.putExtra("dateOfStudy",studyClicked.getDateAdded());
         intent.putExtra("name", namePatient);
         intent.putExtra("surname", surnamePatient);
         intent.putExtra("peselPatient", patientPesel);
@@ -139,10 +140,12 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                         JSONObject jsonObject = response.getJSONObject(i);
                         doctorsName = jsonObject.getString("nameAndSurname");
                         dateOfStudy = jsonObject.getString("dateOfStudy");
+                        dateOfRealStudy = jsonObject.getString("dateAdded");
 
                         String observations = jsonObject.getString("observations");
                         Study study = new Study();
                         study.setObservations("Obserwacje: " + observations);
+                        study.setDateAdded(dateOfRealStudy);
                         dateOfStudy = replace(dateOfStudy, 10, ' ');
                         dateOfStudy = dateOfStudy.substring(0,dateOfStudy.indexOf("."));
 

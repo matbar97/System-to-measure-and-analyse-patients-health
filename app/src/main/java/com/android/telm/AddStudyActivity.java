@@ -2,13 +2,18 @@ package com.android.telm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -25,7 +30,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.android.telm.MainActivity.ip;
@@ -33,9 +43,8 @@ import static com.android.telm.MainActivity.ip;
 public class AddStudyActivity extends AppCompatActivity {
 
 
-
     private Button backAddStudyButton, addAnnotationAddStudyButton, applyStudyAddStudyButton;
-    private EditText observationsMultiLineTextView;
+    private EditText observationsMultiLineTextView, dataBadania;
     private TextView patientNameAddStudyTextView;
     String name, surname, pesel, token, observations, doctorsName, dateOfStudy;
 
@@ -48,11 +57,61 @@ public class AddStudyActivity extends AppCompatActivity {
         applyStudyAddStudyButton = findViewById(R.id.applyStudyAddStudyButton);
         observationsMultiLineTextView = findViewById(R.id.observationsAddStudyEditText);
         patientNameAddStudyTextView = findViewById(R.id.patientNameAddStudyTextView);
+        dataBadania = findViewById(R.id.dataBadania);
+        dataBadania.setInputType(InputType.TYPE_NULL);
+
+        dataBadania.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateTimeDialog(dataBadania);
+            }
+
+            private void showDateTimeDialog(final EditText dataBadania) {
+                final Calendar calendar = Calendar.getInstance();
+
+                Locale.setDefault(Locale.forLanguageTag("PL"));
+                DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Locale.setDefault(Locale.forLanguageTag("PL"));
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                        TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                Locale.setDefault(Locale.forLanguageTag("PL"));
+                                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                calendar.set(Calendar.MINUTE, minute);
+
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+
+                                dataBadania.setText(simpleDateFormat.format(calendar.getTime()));
+                            }
+                        };
+                        Locale.setDefault(Locale.forLanguageTag("PL"));
+                        new TimePickerDialog(AddStudyActivity.this, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
+
+
+                    }
+                };
+                Locale.setDefault(Locale.forLanguageTag("PL"));
+                DatePickerDialog datePickerDialog = new DatePickerDialog(AddStudyActivity.this, dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                datePickerDialog.show();
+
+
+            }
+        });
 
         Intent intent = getIntent();
-        name = intent.getStringExtra("name"); surname = intent.getStringExtra("surname");
-        pesel = intent.getStringExtra("pesel"); token = intent.getStringExtra("token");
-        doctorsName = intent.getStringExtra("doctorsName"); dateOfStudy=intent.getStringExtra("dateOfStudy");
+        name = intent.getStringExtra("name");
+        surname = intent.getStringExtra("surname");
+        pesel = intent.getStringExtra("pesel");
+        token = intent.getStringExtra("token");
+        doctorsName = intent.getStringExtra("doctorsName");
+        dateOfStudy = intent.getStringExtra("dateOfStudy");
         patientNameAddStudyTextView.setText(name + " " + surname);
         System.out.println(doctorsName);
         System.out.println(dateOfStudy);
@@ -73,7 +132,6 @@ public class AddStudyActivity extends AppCompatActivity {
     }
 
 
-
     private void goBackToCurrentPatientData() {
         onBackPressed();
     }
@@ -81,11 +139,12 @@ public class AddStudyActivity extends AppCompatActivity {
     private void goToListOfStudiesForPatient() {
         observations = observationsMultiLineTextView.getText().toString();
 
-        String URL = "http://"+ip+":8080/api/doctor/study/add";
+        String URL = "http://" + ip + ":8080/api/doctor/study/add";
         final JSONObject jsonBody = new JSONObject();
         try {
-            if(!observations.isEmpty()) {
+            if (!observations.isEmpty()) {
                 jsonBody.put("patientPesel", pesel);
+                jsonBody.put("dateAdded", dataBadania.getText().toString());
                 jsonBody.put("observations", observations);
             } else {
                 Toast.makeText(this, "Uzupełnij obserwacje", Toast.LENGTH_SHORT).show();
@@ -108,6 +167,7 @@ public class AddStudyActivity extends AppCompatActivity {
                         intent.putExtra("observations", observations);
                         intent.putExtra("pesel", pesel);
                         intent.putExtra("name", name);
+                        intent.putExtra("dateAdded",dataBadania.getText().toString());
                         intent.putExtra("surname", surname);
                         intent.putExtra("token", token);
                         startActivity(intent);
@@ -122,13 +182,12 @@ public class AddStudyActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("Problem", "Error: " + error.getMessage());
                         Toast.makeText(getApplicationContext()
-                                ,"Błąd w zakładaniu kartoteki"
-                                ,Toast.LENGTH_SHORT).show();
+                                , "Błąd w zakładaniu kartoteki"
+                                , Toast.LENGTH_SHORT).show();
                     }
-                })
-        {
+                }) {
             @Override
-            protected Map<String,String> getParams() {
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 return params;
             }

@@ -26,12 +26,15 @@
         android:ems="10"
         android:hint="Wprowadź login"
         android:inputType="text"
+        android:textAlignment="center"
         android:textColor="#2699fb"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
-        app:layout_constraintVertical_bias="0.119" />
+        app:layout_constraintVertical_bias="0.268" />
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -42,13 +45,15 @@
         android:ems="10"
         android:hint="Wprowadż hasło"
         android:inputType="textPassword"
+        android:textAlignment="center"
         android:textColor="#2699fb"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextLogin"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintVertical_bias="0.169" />
 
     <Button
         android:id="@+id/loginButton"
@@ -76,4 +81,38 @@
         app:layout_constraintTop_toBottomOf="@+id/loginButton"
         app:layout_constraintVertical_bias="0.288"
         app:srcCompat="@drawable/register" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="textPersonName"
+        android:text="Panel logowania"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo"
+        tools:layout_editor_absoluteX="100dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="Nazwa użytkownika"
+        app:layout_constraintBottom_toTopOf="@+id/editTextLogin"
+        tools:layout_editor_absoluteX="143dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="Hasło"
+        app:layout_constraintBottom_toTopOf="@+id/editTextPassword"
+        tools:layout_editor_absoluteX="187dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

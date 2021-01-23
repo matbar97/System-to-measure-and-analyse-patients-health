@@ -29,7 +29,7 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
-    public final static String ip = "192.168.99.1";
+    public final static String ip = "192.168.1.11";
     private Button loginButton, registerButton;
     private EditText editTextLogin, editTextPasswordLogin;
     public static final int[] WEIGHTS = new int[]{1, 3, 7, 9, 1, 3, 7, 9, 1, 3};

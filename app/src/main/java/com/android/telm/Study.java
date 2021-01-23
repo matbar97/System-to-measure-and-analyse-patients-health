@@ -6,6 +6,7 @@ public class Study {
     private String patientPesel;
     private String doctorName;
     private String doctorPesel;
+    private String dateAdded;
 
     public String getStudyDateNTime() {
         return studyDateNTime;
@@ -18,13 +19,22 @@ public class Study {
     private String studyDateNTime;
 
 
-    public Study(String observations, String patientPesel) {
+    public Study(String observations, String patientPesel, String dateAdded) {
         this.observations = observations;
         this.patientPesel = patientPesel;
+        this.dateAdded = dateAdded;
     }
 
     public Study() {
 
+    }
+
+    public String getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(String dateAdded) {
+        this.dateAdded = dateAdded;
     }
 
     public String getObservations() {
@@ -53,6 +63,10 @@ public class Study {
 
     public String getDoctorPesel() {
         return doctorPesel;
+    }
+
+    public Study(String dateAdded) {
+        this.dateAdded = dateAdded;
     }
 
     public void setDoctorPesel(String doctorPesel) {
