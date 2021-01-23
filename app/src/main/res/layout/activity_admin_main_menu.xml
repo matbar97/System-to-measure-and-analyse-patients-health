@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PatientsMenuActivity">
+    tools:context=".DoctorsMainMenuActivity">
 
     <ImageView
         android:id="@+id/backGroundTop"
@@ -23,10 +23,11 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
-        android:id="@+id/myStudiesButton"
-        android:layout_width="125dp"
+        android:id="@+id/findPatientButton"
+        android:layout_width="200dp"
         android:layout_height="25dp"
-        android:background="@drawable/my_studies"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/find_patient"
         app:layout_constraintBottom_toBottomOf="@+id/backGroundBot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -35,30 +36,42 @@
         app:layout_constraintVertical_bias="0.08" />
 
     <Button
-        android:id="@+id/logoutPatientButton"
+        android:id="@+id/addPatientButton"
+        android:layout_width="150dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="248dp"
+        android:background="@drawable/add_patient"
+        app:layout_constraintBottom_toBottomOf="@+id/backGroundBot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/findPatientButton"
+        app:layout_constraintVertical_bias="0.9" />
+
+    <Button
+        android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_marginTop="6dp"
         android:background="@drawable/logout"
         app:layout_constraintBottom_toBottomOf="@+id/backGroundBot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountPatientButton"
-        app:layout_constraintVertical_bias="0.115" />
+        app:layout_constraintTop_toBottomOf="@+id/accountButton"
+        app:layout_constraintVertical_bias="0.130" />
 
     <Button
-        android:id="@+id/accountPatientButton"
+        android:id="@+id/accountButton"
         android:layout_width="60dp"
         android:layout_height="25dp"
-        android:layout_marginTop="6dp"
         android:background="@drawable/account"
         app:layout_constraintBottom_toBottomOf="@+id/backGroundBot"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myStudiesButton"
-        app:layout_constraintVertical_bias="0.088" />
+        app:layout_constraintTop_toBottomOf="@+id/addPatientButton"
+        app:layout_constraintVertical_bias="0.130" />
 
     <ImageView
         android:id="@+id/profilePhotoImageView"
@@ -70,14 +83,14 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.193" />
+        app:layout_constraintVertical_bias="0.272" />
 
     <TextView
         android:id="@+id/professionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Pacjent"
+        android:layout_marginTop="8dp"
+        android:text="Administrator"
         android:textColor="#FFFFFF"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/backGroundTop"
@@ -88,11 +101,11 @@
         app:layout_constraintVertical_bias="0.146" />
 
     <TextView
-        android:id="@+id/patientStudiesNumberTextView"
+        android:id="@+id/studiesNumberTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="204dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="188dp"
         android:text="0"
         android:textColor="#FFFFFF"
         android:textSize="20dp"
@@ -103,28 +116,49 @@
         android:id="@+id/professionTextView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Liczba badań"
+        android:text="Liczba lekarzy"
         android:textColor="#FFFFFF"
         android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.303"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/patientStudiesNumberTextView" />
+        tools:layout_editor_absoluteY="215dp" />
 
     <TextView
-        android:id="@+id/patientNameTextView"
+        android:id="@+id/professionTextView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Liczba pacjentów"
+        android:textColor="#FFFFFF"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.738"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/patientsNumberTextView" />
+
+    <TextView
+        android:id="@+id/patientsNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="188dp"
+        android:layout_marginEnd="128dp"
+        android:text="0"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/doctorNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="33dp"
-        android:layout_marginTop="8dp"
-        android:text="Pacjent Kowalski"
+        android:text=" "
         android:textColor="#FFFFFF"
         android:textSize="23dp"
         app:layout_constraintBottom_toTopOf="@+id/professionTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/backGroundTop"
-        app:layout_constraintTop_toBottomOf="@+id/profilePhotoImageView"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/profilePhotoImageView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
