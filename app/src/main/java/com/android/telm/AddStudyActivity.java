@@ -85,7 +85,7 @@ public class AddStudyActivity extends AppCompatActivity {
                                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                 calendar.set(Calendar.MINUTE, minute);
 
-                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
                                 dataBadania.setText(simpleDateFormat.format(calendar.getTime()));
                             }
