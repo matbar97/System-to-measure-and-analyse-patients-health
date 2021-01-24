@@ -34,7 +34,7 @@ import static com.android.telm.MainActivity.ip;
 public class ListOfDoctorsActivity extends AppCompatActivity implements DoctorsRecyclerAdapterAdminView.OnDoctorListener {
 
     private Button arrowBack;
-    String token, id;
+    String token;
 
     private RecyclerView mList;
 
@@ -53,7 +53,7 @@ public class ListOfDoctorsActivity extends AppCompatActivity implements DoctorsR
         arrowBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                goBackToAdminMenu();
             }
         });
 
@@ -72,6 +72,11 @@ public class ListOfDoctorsActivity extends AppCompatActivity implements DoctorsR
 
     }
 
+    private void goBackToAdminMenu() {
+        Intent intent = new Intent(getApplicationContext(), AdminMainMenuActivity.class);
+        intent.putExtra("token", token);
+        startActivity(intent);
+    }
 
 
     private void getLoadDoctors() {
@@ -90,18 +95,15 @@ public class ListOfDoctorsActivity extends AppCompatActivity implements DoctorsR
                         JSONObject jsonObject = response.getJSONObject(i);
 
                         Doctor doctor = new Doctor();
-                            doctor.setName("Login: " + jsonObject.getString("username"));
-//                        doctor.setSurname(jsonObject.getString("surname"));
+                            doctor.setName(jsonObject.getString("name") + " " + jsonObject.getString("surname"));
                             doctor.setPesel("Pesel: " + jsonObject.getString("pesel"));
                             doctor.setId(jsonObject.getString("id"));
                             doctorList.add(doctor);
-                        System.out.println(doctorList.size());
                     } catch (JSONException e) {
                         e.printStackTrace();
                         progressDialog.dismiss();
                     }
                 }
-                System.out.println(doctorList.size());
 
                 adapter.notifyDataSetChanged();
                 progressDialog.dismiss();
@@ -118,14 +120,11 @@ public class ListOfDoctorsActivity extends AppCompatActivity implements DoctorsR
                 HashMap<String, String> headers = new HashMap<String, String>();
                 Intent intent = getIntent();
                 token = intent.getStringExtra("token");
-                System.out.println("SearchForPatientToken: " + token);
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
-
         };
         queue.add(jsonArrayRequest);
-        System.out.println(doctorList.size());
     }
 
     @Override
@@ -133,8 +132,6 @@ public class ListOfDoctorsActivity extends AppCompatActivity implements DoctorsR
         Doctor doctorClicked = doctorList.get(position);
         Intent intent = new Intent(getApplicationContext(), DoctorDeleteActionActivity.class);
         intent.putExtra("username", doctorClicked.getName());
-//        intent.putExtra("surname", patientClicked.getSurname());
-//        intent.putExtra("pesel", patientClicked.getPesel());
         intent.putExtra("token", token);
         intent.putExtra("id", doctorClicked.getId());
         startActivity(intent);

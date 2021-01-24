@@ -97,20 +97,16 @@ public class ListOfPatientsActivity extends AppCompatActivity implements Patient
 
                         Patient patient = new Patient();
 
-                            patient.setName(jsonObject.getString("username"));
+                            patient.setName(jsonObject.getString("name") + " " + jsonObject.getString("surname"));
                             patient.setPesel("Pesel: " + jsonObject.getString("pesel"));
                             patient.setId(jsonObject.getString("id"));
                             patientList.add(patient);
 
-
-                        System.out.println(patientList.size());
                     } catch (JSONException e) {
                         e.printStackTrace();
                         progressDialog.dismiss();
                     }
                 }
-                System.out.println(patientList.size());
-
                 adapter.notifyDataSetChanged();
                 progressDialog.dismiss();
             }
@@ -126,33 +122,18 @@ public class ListOfPatientsActivity extends AppCompatActivity implements Patient
                 HashMap<String, String> headers = new HashMap<String, String>();
                 Intent intent = getIntent();
                 token = intent.getStringExtra("token");
-                System.out.println("SearchForPatientToken: " + token);
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
         };
         queue.add(jsonArrayRequest);
-        System.out.println(patientList.size());
     }
-
-//    @Override
-//    public void o(int position) {
-    //        Patient patientClicked = patientList.get(position);
-//        Intent intent = new Intent(getApplicationContext(), PatientDataFromDocPointOfViewActivity.class);
-//        intent.putExtra("name", patientClicked.getName());
-//        intent.putExtra("surname", patientClicked.getSurname());
-//        intent.putExtra("pesel", patientClicked.getPesel());
-//        intent.putExtra("token", token);
-//        startActivity(intent);
-//    }
 
     @Override
     public void onPatientClick(int position) {
         Patient patientClicked = patientList.get(position);
         Intent intent = new Intent(getApplicationContext(), PatientDeleteActionActivity.class);
         intent.putExtra("username", patientClicked.getName());
-//        intent.putExtra("surname", patientClicked.getSurname());
-//        intent.putExtra("pesel", patientClicked.getPesel());
         intent.putExtra("token", token);
         intent.putExtra("id", patientClicked.getId());
 

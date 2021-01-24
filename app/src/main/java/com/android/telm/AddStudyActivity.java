@@ -112,8 +112,6 @@ public class AddStudyActivity extends AppCompatActivity {
         doctorsName = intent.getStringExtra("doctorsName");
         dateOfStudy = intent.getStringExtra("dateOfStudy");
         patientNameAddStudyTextView.setText(name + " " + surname);
-        System.out.println(doctorsName);
-        System.out.println(dateOfStudy);
 
         applyStudyAddStudyButton.setOnClickListener(new View.OnClickListener() {
             @Override

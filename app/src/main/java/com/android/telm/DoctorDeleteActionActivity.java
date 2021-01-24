@@ -52,8 +52,6 @@ public class DoctorDeleteActionActivity extends AppCompatActivity {
         id = intent.getStringExtra("id");
         usernameDoc = intent.getStringExtra("username");
         usernameDoc = usernameDoc.replaceAll("Login: ", "");
-
-        System.out.println(usernameDoc);
         docLoginTextView.setText(usernameDoc);
 
         deleteDocBtn.setOnClickListener(new View.OnClickListener() {

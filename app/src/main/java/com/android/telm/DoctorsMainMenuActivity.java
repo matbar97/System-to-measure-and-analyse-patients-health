@@ -208,7 +208,6 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
     private void goToPatientsList() {
         Intent intent = new Intent(getApplicationContext(), SearchForPatientActivity.class);
         intent.putExtra("token", token);
-        System.out.println(token);
         startActivity(intent);
     }
 
@@ -216,7 +215,6 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, PatientCreationActivity.class);
         intent.putExtra("token", token);
-        System.out.println(token);
         startActivity(intent);
     }
 }

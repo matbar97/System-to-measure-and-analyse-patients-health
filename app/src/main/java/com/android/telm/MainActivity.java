@@ -75,12 +75,9 @@ public class MainActivity extends AppCompatActivity {
         final String username = editTextLogin.getText().toString();
         final String pwd = editTextPasswordLogin.getText().toString();
 
-//        if(!username.isEmpty() && !pwd.isEmpty()){
         jsonBody.put("username", username);
         jsonBody.put("password", pwd);
-//        } else {
-//            Toast.makeText(getApplicationContext(), "Uzupełnij wszystkie pola by się zalogować", Toast.LENGTH_SHORT).show();
-//        }
+
         final String requestBody = jsonBody.toString();
 
         JsonObjectRequest request = new JsonObjectRequest(

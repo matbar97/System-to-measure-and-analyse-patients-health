@@ -124,20 +124,11 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("Problem", "Error: " + error.getMessage());
-//                        Toast.makeText(getApplicationContext()
-//                                , "Błąd autoryzacji."
-//                                , Toast.LENGTH_SHORT).show();
                     }
                 }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-//                params.put("username", username);
-//                params.put("password", password);
-//                params.put("name", name);
-//                params.put("surname", surname);
-//                params.put("pesel", pesel);
-
                 return params;
             }
 
@@ -205,9 +196,6 @@ public class CreatePatientAccountActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d("Problem", "Error: " + error.getMessage());
-//                        Toast.makeText(getApplicationContext()
-//                                ,"Nie ma Cię w systemie. Zarejestruj się lub wpisz właściwe dane"
-//                                ,Toast.LENGTH_SHORT).show();
                     }
                 })
         {

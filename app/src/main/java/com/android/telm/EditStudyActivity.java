@@ -108,8 +108,6 @@ public class EditStudyActivity extends AppCompatActivity {
         doctorsName = intent.getStringExtra("doctorsName");
         dateOfStudy = intent.getStringExtra("date");
         patientNameAddStudyTextView.setText(name + " " + surname);
-        System.out.println(doctorsName);
-        System.out.println(dateOfStudy);
         observations = intent.getStringExtra("observations");
         dateOfRealStudy = intent.getStringExtra("dateOfStudy");
         observationsMultiLineTextView.setText(observations);

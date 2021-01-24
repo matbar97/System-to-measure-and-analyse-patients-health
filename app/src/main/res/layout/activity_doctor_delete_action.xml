@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DoctorDeleteActionActivity">
+
     <ImageView
         android:id="@+id/topBackgroundImageView"
         android:layout_width="450dp"
         android:layout_height="match_parent"
         android:background="#1550C0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.256"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,20 +21,20 @@
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_marginTop="228dp"
-        android:text="login:"
+        android:text="Lekarz:"
         android:textColor="#FFFFFF"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.34"
+        app:layout_constraintHorizontal_bias="0.225"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/loginDocAdminDeleteTxtView"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="32dp"
         android:layout_marginTop="228dp"
-        android:layout_marginEnd="108dp"
+        android:layout_marginEnd="16dp"
         android:text="Pacjentowicz"
         android:textColor="#FFFFFF"
         android:textSize="20dp"
@@ -58,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
-        android:text="Usuń lekarza"
+        android:background="@drawable/doc_delete"
         app:layout_constraintBottom_toBottomOf="@+id/topBackgroundImageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

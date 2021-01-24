@@ -90,14 +90,11 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
                                 patient.setPesel(jsonObject.getString("pesel"));
 
                                 patientList.add(patient);
-                                System.out.println(patientList.size());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 progressDialog.dismiss();
                             }
                         }
-                        System.out.println(patientList.size());
-
                         adapter.notifyDataSetChanged();
                         progressDialog.dismiss();
 
@@ -115,15 +112,12 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
                         HashMap<String, String> headers = new HashMap<String, String>();
                         Intent intent = getIntent();
                         token = intent.getStringExtra("token");
-                        System.out.println("SearchForPatientToken: " + token);
                         headers.put("Authorization", "Bearer " + token);
-//                headers.put("Content-Type", "application/json");
                         return headers;
                     }
 
                 };
                 queue.add(jsonArrayRequest);
-                System.out.println(patientList.size());
             }
 
 
@@ -175,13 +169,11 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
                         patient.setPesel(jsonObject.getString("pesel"));
 
                         patientList.add(patient);
-                        System.out.println(patientList.size());
                     } catch (JSONException e) {
                         e.printStackTrace();
                         progressDialog.dismiss();
                     }
                 }
-                System.out.println(patientList.size());
 
                 adapter.notifyDataSetChanged();
                 progressDialog.dismiss();
@@ -198,14 +190,12 @@ public class SearchForPatientActivity extends AppCompatActivity implements Patie
                 HashMap<String, String> headers = new HashMap<String, String>();
                 Intent intent = getIntent();
                 token = intent.getStringExtra("token");
-                System.out.println("SearchForPatientToken: " + token);
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
 
         };
         queue.add(jsonArrayRequest);
-        System.out.println(patientList.size());
     }
 
 

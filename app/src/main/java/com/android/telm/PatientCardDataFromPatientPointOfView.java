@@ -90,7 +90,7 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
     @Override
     public void onStudyClick(int position) {
         Study studyClicked = studyList.get(position);
-        Intent intent = new Intent(getApplicationContext(), StudyReviewActivity.class);
+        Intent intent = new Intent(getApplicationContext(), StudyReviewAcitivityPatient.class);
         intent.putExtra("observations", studyClicked.getObservations());
         intent.putExtra("doctorName", studyClicked.getDoctorName());
         intent.putExtra("date", studyClicked.getStudyDateNTime());
@@ -150,7 +150,6 @@ public class PatientCardDataFromPatientPointOfView extends AppCompatActivity  im
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                System.out.println("SearchForPatientToken: " + token);
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
             }

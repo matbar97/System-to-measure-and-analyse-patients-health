@@ -30,7 +30,7 @@ public class DoctorsRecyclerAdapterAdminView extends RecyclerView.Adapter<Doctor
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         Doctor doctor = doctorList.get(position);
-        holder.pName.setText(doctor.getName()); //+ " " + doctor.getSurname());
+        holder.pName.setText(doctor.getName());
         holder.pPesel.setText(doctor.getPesel());
     }
 
