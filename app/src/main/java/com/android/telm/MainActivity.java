@@ -29,7 +29,7 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
-    public final static String ip = "192.168.8.108";
+    public final static String ip = "192.168.99.1";
     private Button loginButton, registerButton;
     private EditText editTextLogin, editTextPasswordLogin;
     public static final int[] WEIGHTS = new int[]{1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
@@ -91,7 +91,13 @@ public class MainActivity extends AppCompatActivity {
                         Log.i("VOLLEY", response.toString());
                         try {
                             String token = response.getString("token");
-                            if (username.contains("doctor")){
+                            if(username.contains("admin")) {
+                                Intent intent = new Intent(getApplicationContext(), AdminMainMenuActivity.class);
+                                intent.putExtra("token", token);
+                                startActivity(intent);
+                                Toast.makeText(getApplicationContext(), "Witaj " + username, Toast.LENGTH_SHORT).show();
+                            }
+                            else if (username.contains("doctor")){
                                 Intent intent = new Intent(getApplicationContext(), DoctorsMainMenuActivity.class);
                                 intent.putExtra("token", token);
                                 startActivity(intent);
