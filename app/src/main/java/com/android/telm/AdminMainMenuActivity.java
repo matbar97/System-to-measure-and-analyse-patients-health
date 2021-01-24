@@ -42,6 +42,10 @@ public class AdminMainMenuActivity extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                token = "";
+                intent.putExtra("token", token);
+                startActivity(intent);
                 finish();
                 Toast.makeText(getApplicationContext(), "Zostałeś wylogowany.", Toast.LENGTH_SHORT).show();
             }

@@ -10,6 +10,27 @@
         android:id="@+id/patientsRecyclerAdminView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="132dp"
-        tools:layout_editor_absoluteY="89dp" />
+        android:layout_marginTop="52dp"
+        app:layout_constraintTop_toBottomOf="@+id/imageView11"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/account" />
+
+    <Button
+        android:id="@+id/goBackToMainMenuPatAdminBtn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/arrow_back"
+        app:layout_constraintBottom_toTopOf="@+id/patientsRecyclerAdminView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.065"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

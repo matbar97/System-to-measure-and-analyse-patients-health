@@ -6,9 +6,19 @@ class Doctor {
 
     }
 
+    private String id;
     private String name;
     private String surname;
     private String pesel;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
 
     @Override
     public String toString() {

@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import com.android.volley.AuthFailureError;
@@ -32,8 +33,8 @@ import static com.android.telm.MainActivity.ip;
 
 public class ListOfDoctorsActivity extends AppCompatActivity implements DoctorsRecyclerAdapterAdminView.OnDoctorListener {
 
-    private Button arrowBackSearchForPatientButton;
-    String token;
+    private Button arrowBack;
+    String token, id;
 
     private RecyclerView mList;
 
@@ -48,6 +49,14 @@ public class ListOfDoctorsActivity extends AppCompatActivity implements DoctorsR
         setContentView(R.layout.activity_list_of_doctors);
 
         mList = findViewById(R.id.doctorsRecyclerAdminView);
+        arrowBack = findViewById(R.id.goBackToMainMenuAdminBtn);
+        arrowBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         doctorList = new ArrayList<>();
         getLoadDoctors();
 
@@ -81,15 +90,11 @@ public class ListOfDoctorsActivity extends AppCompatActivity implements DoctorsR
                         JSONObject jsonObject = response.getJSONObject(i);
 
                         Doctor doctor = new Doctor();
-                        if(jsonObject.getString("username").contains("doctor")) {
                             doctor.setName("Login: " + jsonObject.getString("username"));
 //                        doctor.setSurname(jsonObject.getString("surname"));
                             doctor.setPesel("Pesel: " + jsonObject.getString("pesel"));
+                            doctor.setId(jsonObject.getString("id"));
                             doctorList.add(doctor);
-
-                        } else {
-
-                        }
                         System.out.println(doctorList.size());
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -125,12 +130,13 @@ public class ListOfDoctorsActivity extends AppCompatActivity implements DoctorsR
 
     @Override
     public void onDocClick(int position) {
-        //        Patient patientClicked = patientList.get(position);
-//        Intent intent = new Intent(getApplicationContext(), PatientDataFromDocPointOfViewActivity.class);
-//        intent.putExtra("name", patientClicked.getName());
+        Doctor doctorClicked = doctorList.get(position);
+        Intent intent = new Intent(getApplicationContext(), DoctorDeleteActionActivity.class);
+        intent.putExtra("username", doctorClicked.getName());
 //        intent.putExtra("surname", patientClicked.getSurname());
 //        intent.putExtra("pesel", patientClicked.getPesel());
-//        intent.putExtra("token", token);
-//        startActivity(intent);
+        intent.putExtra("token", token);
+        intent.putExtra("id", doctorClicked.getId());
+        startActivity(intent);
     }
 }

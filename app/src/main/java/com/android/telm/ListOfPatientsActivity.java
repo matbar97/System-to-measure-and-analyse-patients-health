@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import com.android.volley.AuthFailureError;
@@ -17,6 +18,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -30,9 +32,9 @@ import java.util.Map;
 
 import static com.android.telm.MainActivity.ip;
 
-public class ListOfPatientsActivity extends AppCompatActivity implements PatientRecyclerAdapter2.OnPatientListener{
+public class ListOfPatientsActivity extends AppCompatActivity implements PatientRecyclerAdapter2.OnPatientListener {
 
-    private Button arrowBackSearchForPatientButton;
+    private Button arrowBack;
     String token;
 
     private RecyclerView mList;
@@ -48,6 +50,8 @@ public class ListOfPatientsActivity extends AppCompatActivity implements Patient
         setContentView(R.layout.activity_list_of_patients);
 
         mList = findViewById(R.id.patientsRecyclerAdminView);
+        arrowBack = findViewById(R.id.goBackToMainMenuPatAdminBtn);
+
         patientList = new ArrayList<>();
         getLoadPatients();
 
@@ -61,8 +65,19 @@ public class ListOfPatientsActivity extends AppCompatActivity implements Patient
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
 
+        arrowBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goBackToAdminMenu();
+            }
+        });
     }
 
+    private void goBackToAdminMenu() {
+        Intent intent = new Intent(getApplicationContext(), AdminMainMenuActivity.class);
+        intent.putExtra("token", token);
+        startActivity(intent);
+    }
 
 
     private void getLoadPatients() {
@@ -70,7 +85,7 @@ public class ListOfPatientsActivity extends AppCompatActivity implements Patient
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
-        String URL = "http://"+ip+":8080/api/admin/patient/listall";
+        String URL = "http://" + ip + ":8080/api/admin/patient/listall";
         RequestQueue queue = Volley.newRequestQueue(this);
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
@@ -81,14 +96,12 @@ public class ListOfPatientsActivity extends AppCompatActivity implements Patient
                         JSONObject jsonObject = response.getJSONObject(i);
 
                         Patient patient = new Patient();
-                        if(jsonObject.getString("username").contains("user")) {
+
                             patient.setName(jsonObject.getString("username"));
-//                        patient.setSurname(jsonObject.getString("surname"));
                             patient.setPesel("Pesel: " + jsonObject.getString("pesel"));
+                            patient.setId(jsonObject.getString("id"));
                             patientList.add(patient);
 
-                        } else {
-                        }
 
                         System.out.println(patientList.size());
                     } catch (JSONException e) {
@@ -117,7 +130,6 @@ public class ListOfPatientsActivity extends AppCompatActivity implements Patient
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
             }
-
         };
         queue.add(jsonArrayRequest);
         System.out.println(patientList.size());
@@ -125,7 +137,7 @@ public class ListOfPatientsActivity extends AppCompatActivity implements Patient
 
 //    @Override
 //    public void o(int position) {
-        //        Patient patientClicked = patientList.get(position);
+    //        Patient patientClicked = patientList.get(position);
 //        Intent intent = new Intent(getApplicationContext(), PatientDataFromDocPointOfViewActivity.class);
 //        intent.putExtra("name", patientClicked.getName());
 //        intent.putExtra("surname", patientClicked.getSurname());
@@ -136,6 +148,14 @@ public class ListOfPatientsActivity extends AppCompatActivity implements Patient
 
     @Override
     public void onPatientClick(int position) {
+        Patient patientClicked = patientList.get(position);
+        Intent intent = new Intent(getApplicationContext(), PatientDeleteActionActivity.class);
+        intent.putExtra("username", patientClicked.getName());
+//        intent.putExtra("surname", patientClicked.getSurname());
+//        intent.putExtra("pesel", patientClicked.getPesel());
+        intent.putExtra("token", token);
+        intent.putExtra("id", patientClicked.getId());
 
+        startActivity(intent);
     }
 }

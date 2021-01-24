@@ -9,6 +9,15 @@ public class Patient {
     private String name;
     private String surname;
     private String pesel;
+    String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     @Override
     public String toString() {

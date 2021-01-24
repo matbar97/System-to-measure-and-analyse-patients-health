@@ -92,9 +92,10 @@ public class DoctorsMainMenuActivity extends AppCompatActivity {
     private void logoutCurrentDoctor() {
 
         Intent intent = new Intent(this, MainActivity.class);
+        token = "";
+        intent.putExtra("token", token);
         startActivity(intent);
         Toast.makeText(this, "Zostałeś wylogowany.", Toast.LENGTH_SHORT).show();
-        token = null;
         finish();
     }
 
