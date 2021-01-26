@@ -41,7 +41,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
     private Button goBackButton_PatientData, addStudyButton;
     private TextView actualPatientNameTextView, numberOfRecordsTextView;
     String token, namePatient, surnamePatient, patientPesel, doctorsName, dateOfStudy,dateOfRealStudy,
-            studyObservations, studyId;
+            studyObservations, studyId, modified;
     private RecyclerView mList;
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
@@ -61,6 +61,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         surnamePatient = intent.getStringExtra("surname");
         patientPesel = intent.getStringExtra("pesel");
         studyObservations = intent.getStringExtra("observations");
+
 
 
         getListOfStudiesOfSinglePatient();
@@ -122,6 +123,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         intent.putExtra("surname", surnamePatient);
         intent.putExtra("peselPatient", patientPesel);
         intent.putExtra("token", token);
+        intent.putExtra("modified",studyClicked.getModified());
         intent.putExtra("id", studyClicked.getId());
         startActivity(intent);
     }
@@ -144,6 +146,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                         dateOfRealStudy = jsonObject.getString("dateAdded");
                         String observations = jsonObject.getString("observations");
                         studyId = jsonObject.getString("id");
+                        modified = jsonObject.getString("modified");
                         System.out.println(studyId);
 
                         Study study = new Study();
@@ -155,6 +158,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
                         study.setId(studyId);
                         study.setStudyDateNTime(dateOfStudy);
                         study.setDoctorName("Badał: dr " + doctorsName);
+                        study.setModified(modified);
                         studyList.add(study);
 
                     } catch (JSONException e) {
@@ -227,6 +231,7 @@ public class PatientDataFromDocPointOfViewActivity extends AppCompatActivity imp
         intent.putExtra("surname", surnamePatient);
         intent.putExtra("pesel", patientPesel);
         intent.putExtra("token", token);
+
         startActivity(intent);
     }
 

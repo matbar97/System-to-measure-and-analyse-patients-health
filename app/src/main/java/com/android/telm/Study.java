@@ -7,6 +7,7 @@ public class Study {
     private String doctorName;
     private String doctorPesel;
     private String dateAdded;
+    private String modified;
 
     public String getStudyDateNTime() {
         return studyDateNTime;
@@ -37,6 +38,15 @@ public class Study {
 
     public Study() {
 
+    }
+
+
+    public String getModified() {
+        return modified;
+    }
+
+    public void setModified(String modified) {
+        this.modified = modified;
     }
 
     public String getDateAdded() {
