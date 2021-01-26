@@ -43,7 +43,7 @@ public class EditStudyActivity extends AppCompatActivity {
     private Button backEditStudyButton, applyStudyEditStudyButton;
     private EditText observationsMultiLineTextView, dataBadania;
     private TextView patientNameAddStudyTextView;
-    String name, surname, pesel, token, observations, doctorsName, dateOfStudy, dateOfRealStudy;
+    String name, surname, pesel, token, observations, doctorsName, dateOfStudy, dateOfRealStudy, id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,13 +103,17 @@ public class EditStudyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
         surname = intent.getStringExtra("surname");
-        pesel = intent.getStringExtra("pesel");
+        pesel = intent.getStringExtra("peselPatient");
         token = intent.getStringExtra("token");
-        doctorsName = intent.getStringExtra("doctorsName");
+        doctorsName = intent.getStringExtra("doctorName");
         dateOfStudy = intent.getStringExtra("date");
         patientNameAddStudyTextView.setText(name + " " + surname);
         observations = intent.getStringExtra("observations");
         dateOfRealStudy = intent.getStringExtra("dateOfStudy");
+        id = intent.getStringExtra("id");
+
+        System.out.println(token);
+
         observationsMultiLineTextView.setText(observations);
         dataBadania.setText(dateOfRealStudy);
 
@@ -117,32 +121,33 @@ public class EditStudyActivity extends AppCompatActivity {
         applyStudyEditStudyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToListOfStudiesForPatient();
+                goToListOfStudiesOfPatientInDocView();
             }
         });
 
         backEditStudyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goBackToCurrentPatientData();
+                goBackToStudyReview();
             }
         });
     }
 
-    private void goBackToCurrentPatientData() {
+    private void goBackToStudyReview() {
         onBackPressed();
     }
 
-    private void goToListOfStudiesForPatient() {
+    private void goToListOfStudiesOfPatientInDocView() {
         observations = observationsMultiLineTextView.getText().toString();
 
-        String URL = "http://" + ip + ":8080/api/doctor/study/add";
+        String URL = "http://" + ip + ":8080/api/doctor/patient/study/" + id;
         final JSONObject jsonBody = new JSONObject();
         try {
             if (!observations.isEmpty() && !dataBadania.getText().toString().isEmpty()) {
                 jsonBody.put("patientPesel", pesel);
                 jsonBody.put("dateAdded", dataBadania.getText().toString());
                 jsonBody.put("observations", observations);
+
             } else {
                 Toast.makeText(this, "Uzupełnij dane badania", Toast.LENGTH_SHORT).show();
                 return;
@@ -163,14 +168,15 @@ public class EditStudyActivity extends AppCompatActivity {
                                 PatientDataFromDocPointOfViewActivity.class);
                         intent.putExtra("observations", observations);
                         intent.putExtra("pesel", pesel);
+                        intent.putExtra("surname", surname);
                         intent.putExtra("name", name);
                         intent.putExtra("dateAdded",dataBadania.getText().toString());
-                        intent.putExtra("surname", surname);
                         intent.putExtra("token", token);
                         startActivity(intent);
+                        finish();
 
-                        Toast.makeText(getApplicationContext(), "Dodano badanie pacjentowi "
-                                + name + " " + surname, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Badanie dla pacjenta "
+                                + name + " " + surname + " zostało zaktualizowane", Toast.LENGTH_SHORT).show();
                     }
 
                 },

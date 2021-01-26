@@ -12,7 +12,7 @@
         android:layout_height="300dp"
         android:background="#1550C0"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-16dp" />
+        tools:layout_editor_absoluteX="0dp" />
 
     <ImageView
         android:id="@+id/backGroundBot"
