@@ -33,7 +33,7 @@ public class StudyReviewActivity extends AppCompatActivity {
 
     private Button backReviewStudyButton, goToStudyEditionButton;
     private TextView patientNameReviewStudyTextView, studyDateReviewStudyTextView, addedStudyDateReviewStudyTextView,
-            doctorNameReviewStudyTextView, observationsReviewStudyTextView, dateOfStudyTextView, dateModified, studyModified;
+            doctorNameReviewStudyTextView, observationsReviewStudyTextView, dateOfStudyTextView, dateModified, studyModified, zmodyfikowano;
     String token, doctorWholeName, namePatient, surnamePatient, peselPatient, observations, dateOfStudy, dateOfRealStudy, id, modified, dateOfModification, modifedBy;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +49,7 @@ public class StudyReviewActivity extends AppCompatActivity {
         goToStudyEditionButton = findViewById(R.id.goToStudyEdtionButton);
         dateModified = findViewById(R.id.dateModified);
         studyModified = findViewById(R.id.studyModified);
+        zmodyfikowano = findViewById(R.id.zmodyfikowano);
 
 
         Intent intent = getIntent();
@@ -66,6 +67,7 @@ public class StudyReviewActivity extends AppCompatActivity {
         if(modified.equals("false")){
             dateModified.setVisibility(TextView.INVISIBLE);
             studyModified.setVisibility(TextView.INVISIBLE);
+            zmodyfikowano.setVisibility(TextView.INVISIBLE);
         }else {
             getModifiedInfo();
         }
